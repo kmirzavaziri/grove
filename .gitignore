@@ -1,0 +1,34 @@
+# Golang
+*.test
+*.out
+
+# Coverage files
+*.cov
+cover.out
+coverage.txt
+
+# Debugging files
+debug
+profile.out
+
+# Environment files
+.env
+*.env.local
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Vite
+dist/
+*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# OS/Editor
+.DS_Store
+.vscode/
+.idea/
