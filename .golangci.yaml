@@ -1,0 +1,69 @@
+linters:
+  enable-all: true
+  disable:
+    - goimports
+    - gofumpt
+    - golint
+    - varcheck
+    - deadcode
+    - scopelint
+    - exhaustivestruct
+    - structcheck
+    - wastedassign
+    - funlen
+    - tagliatelle
+    - tagalign
+    - nosprintfhostport
+    - containedctx
+    - contextcheck
+    - cyclop
+    - depguard
+    - dupl
+    - exhaustive
+    - forbidigo
+    - forcetypeassert
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - goerr113
+    - gomnd
+    - gosec
+    - ifshort
+    - interfacebloat
+    - interfacer
+    - ireturn
+    - makezero
+    - maligned
+    - musttag
+    - nestif
+    - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosnakecase
+    - prealloc
+    - revive
+    - stylecheck
+    - wrapcheck
+    - paralleltest
+    - exhaustruct
+    - gochecknoglobals
+
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - prefix(github.com/kmirzavaziri/rip)
+      - default
+    custom-order: true
+  maintidx:
+    under: 15
+  varnamelen:
+    ignore-decls:
+      - t testing.T
+      - i int
+      - T any
+      - w http.ResponseWriter
+      - r *http.Request
+      - ok bool
+      - wg sync.WaitGroup
