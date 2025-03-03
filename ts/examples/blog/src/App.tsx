@@ -1,14 +1,20 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import Grove from "./Grove";
 
-const App = () => {
-    return (
-        <div>
-            <h1>{mockPayload.data.title}</h1>
-            <div>{mockPayload.children.map((child, i) => (
-                <p key={i}>{child.data.text || child.data.title}</p>
-            ))}</div>
-        </div>
-    );
+
+const App: React.FC = () => {
+    const [root, setRoot] = useState<ComponentProp | null>(null);
+
+    useEffect(() => {
+        fetch('http://localhost:8080/grove/home')
+            .then(resp => resp.json())
+            .then(node => setRoot(node))
+            .catch(err => console.error('Fetch error:', err));
+    }, []);
+
+    if (!root) return <div>Loading...</div>;
+
+    return <Grove prop={root}/>;
 };
 
 export default App;

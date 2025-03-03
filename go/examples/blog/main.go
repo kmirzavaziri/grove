@@ -51,11 +51,29 @@ func main() {
 		panic(fmt.Errorf("failed to initiate grove: %w", err))
 	}
 
-	http.Handle("/", g.HTTPHandler(grove.HTTPConfig{Logger: logrus.New()}))
+	mux := http.NewServeMux()
+
+	mux.Handle("/", g.HTTPHandler(grove.HTTPConfig{Logger: logrus.New()}))
 
 	// TODO use log instead of println
 	fmt.Println("starting server http://localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+
+	if err := http.ListenAndServe(":8080", corsMiddleware(mux)); err != nil {
 		panic(fmt.Errorf("failed to listen and serve HTTP: %w", err))
 	}
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
