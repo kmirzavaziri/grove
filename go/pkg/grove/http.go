@@ -21,13 +21,14 @@ type httpHandler struct {
 func (h *httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// TODO we're losing request metadata here
 
+    // TODO only if not empty
 	request := new(gex.Value)
-	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
-		h.c.Logger.Errorf("invalid request json payload: %s", err.Error())
-		http.Error(w, "invalid request json payload", http.StatusBadRequest)
-
-		return
-	}
+// 	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
+// 		h.c.Logger.Errorf("invalid request json payload: %s", err.Error())
+// 		http.Error(w, "invalid request json payload", http.StatusBadRequest)
+//
+// 		return
+// 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
