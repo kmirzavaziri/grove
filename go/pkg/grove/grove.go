@@ -2,49 +2,42 @@ package grove
 
 import (
 	"context"
-	"net/http"
-	"strings"
+	"github.com/kmirzavaziri/grove/go/pkg/greq"
 	"time"
 
-	"github.com/kmirzavaziri/grove/go/pkg/gex"
 	"github.com/kmirzavaziri/grove/go/pkg/grr"
 )
 
 type Config struct {
 	PreExecutionTimeout time.Duration
+	SubmitTimeout       time.Duration
 }
 
 type Grove struct {
-	root   *walkedNode
+	root   *Node
 	config Config
-
-	lookupByPath map[string]*walkedNode
 }
 
 func New(trees []*Node, config Config) (*Grove, error) {
-	root, err := newWalkedNode(&Node{
+	root := &Node{
 		Type:     "grove",
 		Key:      "grove",
 		Role:     "grove",
 		Children: trees,
-	}, nil)
+	}
+
+	err := root.validateAndPopulate()
 	if err != nil {
-		return nil, grr.Wrap(grr.ErrFailedToWalkNode, "failed to walk over grove: %w", err)
+		return nil, grr.Wrap(grr.ErrFailedToValidateAndPopulateGrove, "failed to validate and populate grove: %w", err)
 	}
 
-	lookupByPath := map[string]*walkedNode{strings.Join(root.path, "/"): root}
-
-	for _, c := range root.flatChildren {
-		lookupByPath[strings.Join(c.path, "/")] = c
-	}
-
-	return &Grove{root: root, config: config, lookupByPath: lookupByPath}, nil
+	return &Grove{root: root, config: config}, nil
 }
 
-func (g *Grove) Render(ctx context.Context, path string, request *gex.Value) (*RenderedNode, error) {
+func (g *Grove) Render(ctx context.Context, path string, request greq.Request) (*RenderedNode, *grr.StdErr) {
 	return render(ctx, g, path, request)
 }
 
-func (g *Grove) HTTPHandler(config HTTPConfig) http.Handler {
-	return &httpHandler{g: g, c: config}
+func (g *Grove) Submit(ctx context.Context, path string, request greq.Request) (*Action, *grr.StdErr) {
+	return submit(ctx, g, path, request)
 }

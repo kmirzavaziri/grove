@@ -1,6 +1,8 @@
 package grove
 
 import (
+	"github.com/kmirzavaziri/grove/go/pkg/flux"
+	"github.com/kmirzavaziri/grove/go/pkg/greq"
 	"strings"
 
 	"github.com/kmirzavaziri/grove/go/pkg/gex"
@@ -11,94 +13,193 @@ type Node struct {
 	Type     string
 	Key      string
 	Role     string
-	Data     gex.Flux[*gex.Value]
+	Props    flux.Read[*gex.Value]
+	Submit   flux.Act[*Action]
+	Input    *Input
 	Children []*Node
+
+	parent                *Node
+	path                  string
+	flatChildrenByPath    map[string]*Node
+	hasSubmittableContext bool
+	flatInputsByKey       map[string]*Input
 }
 
-type walkedNode struct {
-	type_        string
-	key          string
-	role         string
-	data         gex.Flux[*gex.Value]
-	children     []*walkedNode
-	path         []string
-	flatChildren []*walkedNode
+func (n *Node) validateAndPopulate() error {
+	err := n.validate()
+	if err != nil {
+		return err
+	}
+
+	n.populateParents(nil)
+
+	err = n.PreOrderDFS(populatePath)
+	if err != nil {
+		return err
+	}
+
+	err = n.PostOrderDFS(populateFlatChildren)
+	if err != nil {
+		return err
+	}
+
+	err = n.PreOrderDFS(populateHasSubmittableContext)
+	if err != nil {
+		return err
+	}
+
+	err = n.PostOrderDFS(populateFlatInputs)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func newWalkedNode(node *Node, parentPath []string) (*walkedNode, error) {
-	if node.Key == "" || strings.Contains(node.Key, "/") {
-		return nil, grr.Wrap(grr.ErrInvalidNodeKey, "invalid node key %q", node.Key)
+func (n *Node) PreOrderDFS(visit func(node *Node) error) error {
+	err := visit(n)
+	if err != nil {
+		return err
 	}
 
-	if node.Type == "" {
-		return nil, grr.Wrap(grr.ErrInvalidNodeType, "invalid node type %q", node.Type)
+	for _, c := range n.Children {
+		err := c.PreOrderDFS(visit)
+		if err != nil {
+			return err
+		}
 	}
 
-	if node.Type == "grove.Error" {
-		nodeData, err := node.Data.Data(gex.Nil(), nil)
+	return nil
+}
+
+func (n *Node) PostOrderDFS(visit func(node *Node) error) error {
+	for _, c := range n.Children {
+		err := c.PostOrderDFS(visit)
 		if err != nil {
-			return nil, grr.Wrap(grr.ErrFailedToGetErrorNodeMessage, "received error node but failed to get data")
+			return err
+		}
+	}
+
+	err := visit(n)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (n *Node) validate() error {
+	if n.Key == "" || strings.Contains(n.Key, "/") {
+		return grr.Wrap(grr.ErrInvalidNodeKey, "invalid node key %q", n.Key)
+	}
+
+	if n.Type == "" {
+		return grr.Wrap(grr.ErrInvalidNodeType, "invalid node type %q", n.Type)
+	}
+
+	if n.Input != nil && n.Key == "" {
+		return grr.Wrap(grr.ErrInvalidInputKey, "invalid input key %q", n.Input.Key)
+	}
+
+	if n.Type == "grove.Error" {
+		props, err := n.Props.Data(greq.Request{}, nil)
+		if err != nil {
+			return grr.Wrap(grr.ErrFailedToGetErrorNodeMessage, "received error node but failed to get props data")
 		}
 
-		message, err := nodeData.Chain().Get("message").String()
+		message, err := props.Chain().Get("message").String()
 		if err != nil {
-			return nil, grr.Wrap(
-				grr.ErrFailedToGetErrorNodeMessage, "received error node but failed to get message from data")
+			return grr.Wrap(grr.ErrFailedToGetErrorNodeMessage, "received error node but failed to get message")
 		}
 
-		return nil, grr.Wrap(grr.ErrReceivedErrorNode, "received error: %q", message)
+		return grr.Wrap(grr.ErrReceivedErrorNode, "received error: %q", message)
 	}
 
 	keySet := make(map[string]struct{})
-
-	for _, child := range node.Children {
+	for _, child := range n.Children {
 		if _, exists := keySet[child.Key]; exists {
-			return nil, grr.Wrap(grr.ErrDuplicateKey, "duplicate key %q in children", child.Key)
+			return grr.Wrap(grr.ErrDuplicateNodeKey, "duplicate key %q in children", child.Key)
 		}
 
 		keySet[child.Key] = struct{}{}
 	}
 
 	roleSet := make(map[string]struct{})
-
-	for _, child := range node.Children {
+	for _, child := range n.Children {
 		if child.Role != "" {
 			if _, exists := roleSet[child.Role]; exists {
-				return nil, grr.Wrap(grr.ErrDuplicateRole, "duplicate role %q in children", child.Role)
+				return grr.Wrap(grr.ErrDuplicateNodeRole, "duplicate role %q in children", child.Role)
 			}
 
 			roleSet[child.Role] = struct{}{}
 		}
 	}
 
-	path := make([]string, len(parentPath)+1)
-	for i := range parentPath {
-		path[i] = parentPath[i]
+	return nil
+}
+
+func (n *Node) populateParents(parent *Node) {
+	n.parent = parent
+
+	for _, c := range n.Children {
+		c.populateParents(n)
+	}
+}
+
+func populatePath(n *Node) error {
+	parentPath := ""
+
+	if n.parent != nil {
+		parentPath = n.parent.path + "/"
 	}
 
-	path[len(parentPath)] = node.Key
+	n.path = parentPath + n.Key
 
-	wNode := &walkedNode{
-		type_:        node.Type,
-		key:          node.Key,
-		role:         node.Role,
-		data:         node.Data,
-		children:     make([]*walkedNode, len(node.Children)),
-		path:         path,
-		flatChildren: []*walkedNode{},
+	return nil
+}
+
+func populateFlatChildren(n *Node) error {
+	n.flatChildrenByPath = map[string]*Node{}
+
+	for _, c := range n.Children {
+		n.flatChildrenByPath[c.path] = c
 	}
 
-	for i, child := range node.Children {
-		wChild, err := newWalkedNode(child, path)
-		if err != nil {
-			return nil, grr.Wrap(grr.ErrFailedToWalkNode, "failed to walk over node %q: %w", child.Key, err)
+	for _, c := range n.Children {
+		for k, v := range c.flatChildrenByPath {
+			n.flatChildrenByPath[k] = v
 		}
-
-		wNode.children[i] = wChild
-
-		wNode.flatChildren = append(wNode.flatChildren, wChild)
-		wNode.flatChildren = append(wNode.flatChildren, wChild.flatChildren...)
 	}
 
-	return wNode, nil
+	return nil
+}
+
+func populateHasSubmittableContext(n *Node) error {
+	n.hasSubmittableContext = (n.parent != nil && n.parent.hasSubmittableContext) || n.Submit != nil
+
+	return nil
+}
+
+func populateFlatInputs(n *Node) error {
+	if !n.hasSubmittableContext {
+		return nil
+	}
+
+	n.flatInputsByKey = map[string]*Input{}
+
+	if n.Input != nil {
+		n.flatInputsByKey[n.Input.Key] = n.Input
+	}
+
+	for _, c := range n.Children {
+		for k, v := range c.flatInputsByKey {
+			if _, exists := n.flatInputsByKey[k]; exists {
+				return grr.Wrap(grr.ErrDuplicateInputKey, "duplicate input key %q in node %q", k, n.path)
+			}
+
+			n.flatInputsByKey[k] = v
+		}
+	}
+
+	return nil
 }

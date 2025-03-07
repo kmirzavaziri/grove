@@ -82,3 +82,42 @@ func (c Chain) Bool() (bool, error) {
 
 	return v, nil
 }
+
+func (c Chain) TryNumber() float64 {
+	if c.err != nil {
+		return 0
+	}
+
+	v, ok := c.v.Number()
+	if !ok {
+		return 0
+	}
+
+	return v
+}
+
+func (c Chain) TryString() string {
+	if c.err != nil {
+		return ""
+	}
+
+	v, ok := c.v.String()
+	if !ok {
+		return ""
+	}
+
+	return v
+}
+
+func (c Chain) TryBool() bool {
+	if c.err != nil {
+		return false
+	}
+
+	v, ok := c.v.Bool()
+	if !ok {
+		return false
+	}
+
+	return v
+}

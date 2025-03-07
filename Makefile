@@ -16,7 +16,7 @@ ifndef name
 	@echo "Error: 'name' variable required (e.g., make example-server name=blog)"
 	@exit 1
 endif
-	go run ./go/examples/$(name)/main.go
+	go run ./go/examples/$(name)
 
 
 .PHONY: example-client
