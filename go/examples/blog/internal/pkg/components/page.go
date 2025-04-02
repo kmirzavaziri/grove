@@ -35,20 +35,52 @@ func Page(args PageArgs) *grove.Node {
 	}
 
 	sidebarStart := []*grove.Node{
+		// grovex.XClickable(grovex.XClickableArgs{
+		// 	Key: "avatar_xc",
+		// 	Props: flux.ReadStatic(grovex.XClickableProps{
+		// 		Action: grovex.ARender(grovex.ARenderPayload{
+		// 			NodePath:      []string{"home"},
+		// 			UpdateHistory: true,
+		// 		}),
+		// 	}),
+		// 	Children: []*grove.Node{
+		// 		grovex.DProfile(grovex.DProfileArgs{
+		// 			Key: "avatar",
+		// 			Props: flux.ReadStatic(grovex.DProfileProps{
+		// 				Image:    "/static/images/avatar/7.jpg",
+		// 				Title:    "Kamyar Mirzavaziri",
+		// 				Subtitle: "u/kmirzavaziri",
+		// 			}),
+		// 		}),
+		// 	},
+		// }),
 		grovex.XClickable(grovex.XClickableArgs{
-			Key: "avatar_xc",
+			Key: "avatar",
 			Props: flux.ReadStatic(grovex.XClickableProps{
-				Action: grovex.AFetch(grovex.AFetchPayload{
-					NodePath: "home",
+				Action: grovex.ARender(grovex.ARenderPayload{
+					NodePath: []string{args.Key, "sidebar_start", "auth"},
+					// TODO what would be better here, define modal somewhere else and patch here, or completely have it here?
+					Node: grove.MustStaticRender(grovex.XModal(grovex.XModalArgs{
+						Key:   "auth",
+						Props: flux.ReadStatic(grovex.XModalProps{Open: true}),
+						Children: []*grove.Node{
+							grovex.DTypography(grovex.DTypographyArgs{
+								Key: "date",
+								Props: flux.ReadStatic(grovex.DTypographyProps{
+									Text:    "Hello",
+									Variant: gex.P(variants.TypographyVariantH3),
+								}),
+							}),
+						},
+					})),
 				}),
 			}),
 			Children: []*grove.Node{
 				grovex.DProfile(grovex.DProfileArgs{
-					Key: "avatar",
+					Key: "profile",
 					Props: flux.ReadStatic(grovex.DProfileProps{
-						Image:    "/static/images/avatar/7.jpg",
-						Title:    "Kamyar Mirzavaziri",
-						Subtitle: "u/kmirzavaziri",
+						Title:    "Guest",
+						Subtitle: "guest",
 					}),
 				}),
 			},
@@ -108,8 +140,9 @@ func menuItem(key string, icon variants.Icon, text string, selected bool) *grove
 	return grovex.XClickable(grovex.XClickableArgs{
 		Key: key,
 		Props: flux.ReadStatic(grovex.XClickableProps{
-			Action: grovex.AFetch(grovex.AFetchPayload{
-				NodePath: key,
+			Action: grovex.ARender(grovex.ARenderPayload{
+				NodePath:      []string{key},
+				UpdateHistory: true,
 			}),
 		}),
 		Children: []*grove.Node{

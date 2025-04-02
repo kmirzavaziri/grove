@@ -2,6 +2,7 @@ package grove
 
 import (
 	"context"
+
 	"github.com/kmirzavaziri/grove/go/pkg/executor"
 	"github.com/kmirzavaziri/grove/go/pkg/flux"
 	"github.com/kmirzavaziri/grove/go/pkg/gex"
@@ -139,4 +140,38 @@ func renderNode(
 	}
 
 	return renderedNode, nil
+}
+
+// TODO is the must approach fine, should we enhance it somehow?
+func MustStaticRender(node *Node) *RenderedNode {
+	var input *RenderedInput
+
+	if node.Input != nil {
+		inputDef := flux.MustReadEvaluateStatic(node.Input.Def)
+		input = &RenderedInput{
+			Key:   node.Input.Key,
+			Value: inputDef.Value,
+			Guard: inputDef.Guard,
+		}
+	}
+
+	renderedNode := &RenderedNode{
+		Type:     node.Type,
+		Key:      node.Key,
+		Role:     node.Role,
+		Props:    flux.MustReadEvaluateStatic(node.Props),
+		Input:    input,
+		Children: make([]*RenderedNode, 0, len(node.Children)),
+	}
+
+	for _, c := range node.Children {
+		renderedChild := MustStaticRender(c)
+		if renderedChild == nil {
+			continue
+		}
+
+		renderedNode.Children = append(renderedNode.Children, renderedChild)
+	}
+
+	return renderedNode
 }

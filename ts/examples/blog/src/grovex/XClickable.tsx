@@ -1,15 +1,17 @@
 import React from "react";
 import {Component, ComponentProps} from "../grove/Component";
-import {Action, perform} from "./action";
+import {ActionProps, perform} from "../grove/action";
+import {useAppContext} from "../grove/app-state";
+import {Box} from "@mui/material";
 
 export interface XClickable {
-    action: Action;
+    action: ActionProps;
     children: ComponentProps[];
 }
 
-export const XClickable: React.FC<XClickable> = (props) => (
-    // TODO use MUI?
-    <div onClick={() => perform(props.action)}>
+export const XClickable: React.FC<XClickable> = (props) => {
+    const appContextValue = useAppContext();
+    return <Box onClick={() => perform(appContextValue, props.action)} sx={{ cursor: 'pointer' }}>
         {props.children.map(child => (<Component key={child.key} props={child}/>))}
-    </div>
-);
+    </Box>
+};

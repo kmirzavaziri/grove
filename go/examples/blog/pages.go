@@ -8,7 +8,7 @@ import (
 var pages = []*grove.Node{
 	components.Page(components.PageArgs{
 		Key:   "home",
-		Title: "Dashboard Home",
+		Title: "Home",
 	}),
 	components.Page(components.PageArgs{
 		Key:   "users",

@@ -122,3 +122,18 @@ func (ff ReadAggregation[K, V]) Evaluate(request greq.Request, executionResultsA
 
 	return result, nil
 }
+
+func MustReadEvaluateStatic[T any](f Read[T]) T {
+	request := greq.Request{}
+
+	if len(f.PreExecutors(request)) != 0 {
+		panic("read flux has pre executors but is expected to be static") // TODO gerr?
+	}
+
+	v, err := f.Data(request, nil)
+	if err != nil {
+		panic("read flux is returning error but is expected to be static") // TODO gerr?
+	}
+
+	return v
+}

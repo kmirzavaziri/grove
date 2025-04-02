@@ -5,19 +5,39 @@ import {DTypography} from "../grovex/DTypography";
 export const componentRegistry = new Map<string, React.ComponentType<any>>();
 
 export interface ComponentProps {
-    type: string;
-    key: string;
+    type?: string;
+    key?: string;
+    path?: string[];
     role?: string;
     props?: { [key: string]: any };
     children?: ComponentProps[];
 }
 
 export const Component: React.FC<{ props: ComponentProps }> = ({props}) => {
+    if (props.type === undefined) {
+        props.type = "";
+    }
+
+    if (props.key === undefined) {
+        props.key = "";
+    }
+
+    if (props.path === undefined) {
+        props.path = [];
+    }
+
     const ComponentFn = componentRegistry.get(props.type);
     if (ComponentFn === undefined) {
         return <DTypography text={`Component ${props.type} not found`} color="error"/>;
     }
 
-    return <ComponentFn key={props.key} children={props.children} {...props.props}/>;
+    return <ComponentFn key={props.key} path={props.path} children={props.children} {...props.props}/>;
 };
 
+export const patchComponentProps = (dest: ComponentProps, src: ComponentProps) => {
+    if (src.type) dest.type = src.type;
+    if (src.key) dest.key = src.key;
+    if (src.role) dest.role = src.role;
+    dest.props = {...dest.props, ...src.props};
+    if (src.children?.length) dest.children = src.children;
+}

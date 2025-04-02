@@ -1,13 +1,20 @@
-import { createContext, useContext, Dispatch } from "react";
-import { ComponentProps } from "./Component";
+import {createContext, useContext, Dispatch} from "react";
+import {ComponentProps, patchComponentProps} from "./Component";
+import {ActionProps} from "./action";
 
 export interface AppState {
     tree: ComponentProps | null;
 }
 
-interface AppContextValue {
+export interface ApiHandlers {
+    fetch: (nodePath: string[], request?: any) => Promise<ComponentProps>;
+    submit: (nodePath: string[], request?: any) => Promise<ActionProps>;
+}
+
+export interface AppContextValue {
     state: AppState;
-    dispatch: Dispatch<{ nodePath: string[]; node: ComponentProps }>;
+    render: Dispatch<{ path: string[]; node: ComponentProps, patch?: boolean }>;
+    apiHandlers: ApiHandlers;
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
@@ -18,18 +25,69 @@ export function useAppContext() {
     return context;
 }
 
-function updateTree(tree: ComponentProps, path: string[], node: ComponentProps): ComponentProps {
-    if (path.length === 0) return node;
-    const [head, ...tail] = path;
-    const children = (tree.children || []).map(child =>
-        child.key === head ? updateTree(child, tail, node) : { ...child }
-    );
-    return { ...tree, children };
+function updateTree(tree: ComponentProps, path: string[], node: ComponentProps, patch: boolean) {
+    if (!tree.children) {
+        tree.children = [];
+    }
+
+    const childIndex = tree.children.findIndex(child => child.key === path[1]);
+
+    if (path.length === 2) {
+        if (childIndex >= 0) {
+            if (patch) {
+                patchComponentProps(tree.children[childIndex], node);
+            } else {
+                tree.children[childIndex] = {...node};
+            }
+        } else {
+            tree.children.push({...node});
+        }
+
+        return;
+    }
+
+    if (childIndex === -1) {
+        throw new Error(`Path ${path.join('.')} not found: no child with key ${path[1]}`);
+    }
+
+
+    updateTree(tree.children[childIndex], path.slice(1), node, patch);
 }
 
-export function appReducer(state: AppState, action: { nodePath: string[]; node: ComponentProps }) {
-    if (!state.tree || action.nodePath.length === 0) return { tree: action.node };
-    return { tree: updateTree(state.tree, action.nodePath, action.node) };
+
+export function appReducer(state: AppState, action: { path: string[]; node: ComponentProps; patch?: boolean }) {
+    if (!state.tree) {
+        state.tree = action.node;
+    }
+
+    const path = action.path?.length ? action.path : [action.node.key || ""];
+
+    if (path.length === 1) {
+        state.tree = action.node;
+    } else {
+        updateTree(state.tree, path, action.node, action.patch || false)
+    }
+
+
+    function populatePath(node: ComponentProps, parentPath: string[] = []) {
+        if (node.key === undefined) {
+            node.key = ""
+        }
+
+        if (node.children === undefined) {
+            node.children = []
+        }
+
+        node.path = [...parentPath, node.key];
+
+        for (const child of node.children) {
+            populatePath(child, node.path);
+        }
+    }
+
+    populatePath(state.tree);
+
+    return {tree: state.tree};
 }
 
-export { AppContext };
+export {AppContext};
