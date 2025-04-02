@@ -114,7 +114,7 @@ TODO
 | `LTabs`         | TODO | TODO | TODO  | TODO                                                                                                                                                                  |
 | **Specials**    |      |      |       |                                                                                                                                                                       |
 | `XClickable`    |      | TODO | TODO  | TODO                                                                                                                                                                  |
-| `XModal`        | TODO | TODO | TODO  | TODO                                                                                                                                                                  |
+| `XModal`        |      | TODO | TODO  | TODO                                                                                                                                                                  |
 
 ### Writing Your Own Custom Components
 

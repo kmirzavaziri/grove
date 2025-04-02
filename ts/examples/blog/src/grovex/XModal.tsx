@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Component, ComponentProps} from "../grove/Component";
-import {Box, Modal} from "@mui/material";
+import {Box, FormLabel, Grid, Modal, OutlinedInput, TextField, Typography} from "@mui/material";
 import {useAppContext} from "../grove/app-state";
 import {ARender} from "./ARender";
+import {DTypography} from "./DTypography";
+import {styled} from "@mui/material/styles";
+
+const FormGrid = styled(Grid)(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+}));
 
 export interface XModalProps {
     path: string[];
@@ -41,14 +48,32 @@ export const XModal: React.FC<XModalProps> = (props) => {
                     transform: "translate(-50%, -50%)",
                     width: 500,
                     bgcolor: "background.paper",
-                    border: "2px solid #000",
+                    border: '1px solid',
+                    borderColor: "divider",
+                    borderRadius: 1,
                     boxShadow: 24,
                     p: 4,
                 }}
             >
-                {props.children.map((child) => (
-                    <Component key={child.key} props={child}/>
-                ))}
+                <FormGrid size={{ xs: 12, md: 6 }}>
+
+                <FormLabel htmlFor="first-name" required>
+                    First name
+                </FormLabel>
+                <OutlinedInput
+                    id="first-name"
+                    name="first-name"
+                    type="name"
+                    placeholder="John"
+                    autoComplete="first name"
+                    required
+                    size="small"
+                />
+                </FormGrid>
+
+                {/*{props.children.map((child) => (*/}
+                {/*    <Component key={child.key} props={child}/>*/}
+                {/*))}*/}
             </Box>
         </Modal>
     );
