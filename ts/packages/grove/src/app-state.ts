@@ -4,11 +4,10 @@ import {createContext, useContext} from 'react';
 import type {ActionProps} from './action';
 import type {ComponentProps} from './Component';
 import type {Struct} from './value';
-import {flatten, updatePaths} from './recursion';
+import {getNodeAt, updatePaths} from './recursion';
 
 export interface AppState {
     node: ComponentProps | null;
-    flatNodes: Map<string, ComponentProps>;
 }
 
 export interface ApiHandlers {
@@ -39,23 +38,19 @@ export function appReducer(
         modify: (node: ComponentProps) => void;
     },
 ): AppState {
-    if (!state.node) {
-        state.node = {};
+    let node = structuredClone(state.node);
+
+    if (!node) {
+        node = {};
     }
 
-    // TODO don't modify, return a new state
-    // TODO does react handle partial updates or re-renders everything?
-    const node = state.flatNodes.get(action.path.join('/'));
-    if (node) {
-        action.modify(node);
-    }
+    const targetNode = getNodeAt(node, action.path.slice(1));
 
-    updatePaths(state.node);
+    action.modify(targetNode);
 
-    return {
-        node: state.node,
-        flatNodes: flatten(state.node),
-    };
+    updatePaths(node);
+
+    return {node: node};
 }
 
 export {AppContext};

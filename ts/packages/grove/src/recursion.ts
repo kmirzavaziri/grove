@@ -1,16 +1,22 @@
 import {ComponentProps} from './Component';
 
-export function flatten(node: ComponentProps): Map<string, ComponentProps> {
-    const map = new Map<string, ComponentProps>();
-
-    function traverse(n: ComponentProps) {
-        map.set(n.path?.join('/') || '', n);
-        n.children?.forEach(traverse);
+export function getNodeAt(node: ComponentProps, path: string[]): ComponentProps {
+    if (path.length === 0) {
+        return node;
     }
 
-    traverse(node);
+    const children = (node.children ?? []);
 
-    return map;
+    const childIndex = children.findIndex((child) => child.key === path[0]);
+
+    if (childIndex === -1) {
+        throw new Error(
+            `not found: node ${node.path} has no child with key ${path[0]}, available keys:` +
+            children.map((child) => child.key).join(', '),
+        );
+    }
+
+    return getNodeAt(children[childIndex], path.slice(1));
 }
 
 export function updatePaths(node: ComponentProps, parentPath: string[] = []): void {
@@ -28,3 +34,6 @@ export function updatePaths(node: ComponentProps, parentPath: string[] = []): vo
         updatePaths(child, node.path);
     }
 }
+
+
+
