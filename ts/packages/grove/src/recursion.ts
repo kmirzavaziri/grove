@@ -1,34 +1,16 @@
 import {ComponentProps} from './Component';
 
+export function flatten(node: ComponentProps): Map<string, ComponentProps> {
+    const map = new Map<string, ComponentProps>();
 
-export function flatten(node: ComponentProps): ComponentProps[] {
-//     TODO implement recursive
-}
-
-export function getNodeAt(node: ComponentProps, path: string[]): ComponentProps {
-    // TODO maybe keep a flat map that has node path to node, and access easier
-    if (path.length === 0) {
-        return node;
+    function traverse(n: ComponentProps) {
+        map.set(n.path?.join('/') || '', n);
+        n.children?.forEach(traverse);
     }
 
-    if (!node.children) {
-        node.children = [];
-    }
+    traverse(node);
 
-    const childIndex = node.children.findIndex((child) => child.key === path[0]);
-
-    if (childIndex === -1) {
-        throw new Error(
-            `not found: node ${node.path} has no child with key ${path[0]}, available keys:` +
-            node.children.map((child) => child.key).join(', '),
-        );
-    }
-
-    if (path.length === 1) {
-        return node.children[childIndex];
-    }
-
-    return getNodeAt(node.children[childIndex], path.slice(1));
+    return map;
 }
 
 export function updatePaths(node: ComponentProps, parentPath: string[] = []): void {

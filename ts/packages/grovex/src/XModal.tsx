@@ -26,9 +26,8 @@ export const XModal: React.FC<XModalProps> = (props) => {
             dispatch({
                 path: props.path,
                 modify: (node: ComponentProps) => {
-                    if (node.props) {
-                        node.props.open = false;
-                    }
+                    node.props = node.props ?? {};
+                    node.props.open = false;
                 },
             });
         }
