@@ -3,7 +3,7 @@ import {createContext, useContext} from 'react';
 
 import type {ActionProps} from './action';
 import type {ComponentProps} from './Component';
-import {setNodeAt} from './recursion';
+import {getNodeAt, updatePaths} from './recursion';
 import type {Struct} from './value';
 
 export interface AppState {
@@ -17,7 +17,7 @@ export interface ApiHandlers {
 
 export interface AppContextValue {
     state: AppState;
-    render: Dispatch<{path: string[]; node: ComponentProps; patch?: boolean}>;
+    dispatch: Dispatch<{path: string[]; modify: (node: ComponentProps) => void}>;
     apiHandlers: ApiHandlers;
 }
 
@@ -31,39 +31,26 @@ export function useAppContext(): AppContextValue {
     return context;
 }
 
-export function appReducer(state: AppState, action: {path: string[]; node: ComponentProps; patch?: boolean}): AppState {
+export function appReducer(
+    state: AppState,
+    action: {
+        path: string[];
+        modify: (node: ComponentProps) => void;
+    },
+): AppState {
     if (!state.tree) {
-        state.tree = action.node;
+        state.tree = {};
     }
 
-    const path = action.path?.length ? action.path : [action.node.key || ''];
-
-    if (path.length === 1) {
-        state.tree = action.node;
-    } else {
-        if (state.tree.key !== path[0]) {
-            throw new Error(`Path ${path.join('.')} not found: tree root is not ${path[0]}, it is ${state.tree.key}`);
-        }
-        setNodeAt(state.tree, path.slice(1), action.node, action.patch || false);
+    if (state.tree.key !== action.path[0]) {
+        throw new Error(
+            `${action.path.join('.')} not found: tree root is not ${action.path[0]}, it is ${state.tree.key}`,
+        );
     }
 
-    function populatePath(node: ComponentProps, parentPath: string[] = []): void {
-        if (node.key === undefined) {
-            node.key = '';
-        }
+    action.modify(getNodeAt(state.tree, action.path.slice(1)));
 
-        if (node.children === undefined) {
-            node.children = [];
-        }
-
-        node.path = [...parentPath, node.key];
-
-        for (const child of node.children) {
-            populatePath(child, node.path);
-        }
-    }
-
-    populatePath(state.tree);
+    updatePaths(state.tree);
 
     return {tree: state.tree};
 }
