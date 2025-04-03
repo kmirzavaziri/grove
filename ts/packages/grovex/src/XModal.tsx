@@ -23,7 +23,7 @@ export const XModal: React.FC<XModalProps> = (props) => {
         setOpen(props.open ?? false);
     }, [props.open]);
 
-    const handleClose = () => {
+    const handleClose = (): void => {
         if (props.path) {
             ARender({state, render, apiHandlers}, {node_path: props.path, patch: true, node: {props: {open: false}}});
         }

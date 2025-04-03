@@ -1,8 +1,8 @@
-import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import React from "react";
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import React from 'react';
 
 export interface DProfileProps {
     image: string;
@@ -48,6 +48,6 @@ export const DProfile: React.FC<DProfileProps> = (props) => {
                     </Typography>
                 </Stack>
             </Stack>
-        </>;
+        </>
     );
 };

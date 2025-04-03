@@ -1,19 +1,20 @@
-import Box from "@mui/material/Box";
-import Stack from '@mui/material/Stack';
-import Drawer, {drawerClasses} from "@mui/material/Drawer";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import {tabsClasses} from '@mui/material/Tabs';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import AppBar from '@mui/material/AppBar';
+import Badge, {badgeClasses} from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer, {drawerClasses} from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import {tabsClasses} from '@mui/material/Tabs';
+import Toolbar from '@mui/material/Toolbar';
+import React, {useEffect} from 'react';
 
-import Divider from "@mui/material/Divider";
-import Badge, {badgeClasses} from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
-import React, {useEffect} from "react";
-import {Component, ComponentProps} from '../../grove/src/Component';
+import type {ComponentProps} from '../../grove/src/Component';
+import {Component} from '../../grove/src/Component';
 
-import {DDivider} from "./DDivider";
-import {findComponentByRole} from "./role";
+import {DDivider} from './DDivider';
+import {findComponentByRole} from './role';
 
 export interface LPageProps {
     title: string;
@@ -210,6 +211,6 @@ export const LPage: React.FC<LPageProps> = (props) => {
                     </Box>
                 </Stack>
             </Box>
-        </Box>;
+        </Box>
     );
 };

@@ -54,6 +54,7 @@ module.exports = [
             '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/no-non-null-assertion': 'error',
+            '@typescript-eslint/no-empty-object-type': 'off',
             'indent': ['error', 4, {
                 SwitchCase: 1,
                 MemberExpression: 1,
