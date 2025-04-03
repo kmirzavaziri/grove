@@ -1,6 +1,6 @@
 import React from "react";
-import {Align, align2MUI, Color, DTypographyVariant} from "./variants";
 import {Typography} from "@mui/material";
+import {Align, align2MUI, Color, DTypographyVariant} from "./variants";
 
 
 export interface DTypographyProps {

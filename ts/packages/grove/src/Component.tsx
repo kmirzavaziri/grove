@@ -1,6 +1,6 @@
 import React from "react";
 // TODO do not use grovex from grove // TODO add allowed import DAG as a lint rule to both ts & go
-import {DTypography} from "../grovex/DTypography";
+import {DTypography} from "../../grovex/src/DTypography";
 import {Input} from "./input";
 
 export const componentRegistry = new Map<string, React.ComponentType<any>>();

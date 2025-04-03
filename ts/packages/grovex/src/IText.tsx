@@ -1,6 +1,6 @@
 import React from "react";
 import {FormLabel, Grid, OutlinedInput} from "@mui/material";
-import {Input} from "../grove/input";
+import {Input} from "../../grove/src/input";
 import {ITextVariant} from "./variants";
 
 export interface ITextProps {

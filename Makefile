@@ -13,7 +13,7 @@ GO_LINTER_VERSION = 1.55.0
 .PHONY: example-server
 example-server:
 ifndef name
-	@echo "Error: 'name' variable required (e.g., make example-server name=blog)"
+	@echo "Error: 'name' variable required (e.g., make example-server name=dashboard)"
 	@exit 1
 endif
 	go run ./go/examples/$(name)
@@ -22,7 +22,7 @@ endif
 .PHONY: example-client
 example-client:
 ifndef name
-	@echo "Error: 'name' variable required (e.g., make example-client name=blog)"
+	@echo "Error: 'name' variable required (e.g., make example-client name=dashboard)"
 	@exit 1
 endif
 	cd ts/examples/$(name) && npm install && npm run dev
@@ -30,7 +30,7 @@ endif
 .PHONY: example
 example:
 ifndef name
-	@echo "Error: 'name' variable required (e.g., make example name=blog)"
+	@echo "Error: 'name' variable required (e.g., make example name=dashboard)"
 	@exit 1
 endif
 	@make -j2 example-server example-client name=$(name)

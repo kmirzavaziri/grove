@@ -1,4 +1,5 @@
-import {componentRegistry} from "../grove/Component";
+import {componentRegistry} from "@grove/grove";
+import {actionRegistry} from "@grove/grove";
 import {DBreadcrumbs} from "./DBreadcrumbs";
 import {DButton} from "./DButton";
 import {DDivider} from "./DDivider";
@@ -23,7 +24,6 @@ import {LPage} from "./LPage";
 import {XClickable} from "./XClickable";
 import {XModal} from "./XModal";
 
-import {actionRegistry} from "../grove/action";
 import {ARender} from "./ARender";
 
 componentRegistry

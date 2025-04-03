@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App, {groveFetch, groveSubmit} from './grove/App';
-import {base_url} from './const';
+import {App, groveFetch, groveSubmit} from '@grove/grove';
 import {CssBaseline} from "@mui/material";
+import {initRouting} from "@grove/grove";
+import {base_url} from './const';
 import AppTheme from "./theme/AppTheme";
-import {initRouting} from "./grovex/routing";
-import "./grovex/setup";
+import "@grove/grovex/src/setup";
 import "./setup";
 
 initRouting(new Map<string, string>([

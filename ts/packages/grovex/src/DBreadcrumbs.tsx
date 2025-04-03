@@ -3,9 +3,8 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import MuiBreadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
-import {XClickable} from "./XClickable";
-import {useAppContext} from "../grove/app-state";
-import {ActionProps, perform} from "../grove/action";
+import {useAppContext} from "@grove/grove";
+import {ActionProps, perform} from "@grove/grove";
 
 const Breadcrumbs = styled(MuiBreadcrumbs)(({ theme }) => ({
     margin: theme.spacing(1, 0),

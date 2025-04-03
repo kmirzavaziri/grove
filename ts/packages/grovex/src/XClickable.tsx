@@ -1,8 +1,8 @@
 import React from "react";
-import {Component, ComponentProps} from "../grove/Component";
-import {ActionProps, perform} from "../grove/action";
-import {useAppContext} from "../grove/app-state";
 import {Box} from "@mui/material";
+import {Component, ComponentProps} from "../../grove/src/Component";
+import {ActionProps, perform} from "../../grove/src/action";
+import {useAppContext} from "../../grove/src/app-state";
 
 export interface XClickable {
     action: ActionProps;

@@ -1,4 +1,4 @@
-import {AppContextValue, useAppContext} from "./app-state";
+import {AppContextValue} from "./app-state";
 
 type Action<T> = (appContextValue: AppContextValue, payload: T) => void
 

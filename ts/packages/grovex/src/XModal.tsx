@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Component, ComponentProps} from "../grove/Component";
 import {Box, Modal} from "@mui/material";
-import {useAppContext} from "../grove/app-state";
+import {Component, ComponentProps} from "../../grove/src/Component";
+import {useAppContext} from "../../grove/src/app-state";
 import {ARender} from "./ARender";
 
 export interface XModalProps {

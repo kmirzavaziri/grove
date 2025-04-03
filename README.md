@@ -125,9 +125,10 @@ TODO
 1. Unmarshal `gex.Value` to any given concrete type, then use it in walk, when trying to unmarshal error node data
 2. Should we use `gex.Value` and marshal / unmarshal it, or use `any` instead, with type assertions?
 3. Should we merge Data and Execution in flux for simplicity?
-4. Add logging to examples/blog server.
+4. Add logging to examples/dashboard server.
 5. Add tests for guards: not, and, or
 6. Fix the common guard `Type` marshalling procedure. (`func (v Type) Marshal() *gex.Value`)
 7. Use match for email guard instead of new script?
 8. Put data besides input and children when sending to fe in render? 
 9. Add unknown value to enums (variants), instead of pointer for nil.
+10. Enforce import DAG.

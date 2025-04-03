@@ -1,5 +1,5 @@
 import React from "react";
-import {Component, ComponentProps} from "../grove/Component";
+import {Component, ComponentProps} from "../../grove/src/Component";
 
 export interface LFragment {
     children: ComponentProps[]

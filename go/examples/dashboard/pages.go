@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/kmirzavaziri/grove/go/examples/blog/internal/pkg/components"
+	"github.com/kmirzavaziri/grove/go/examples/dashboard/internal/pkg/components"
 	"github.com/kmirzavaziri/grove/go/pkg/grove"
 )
 

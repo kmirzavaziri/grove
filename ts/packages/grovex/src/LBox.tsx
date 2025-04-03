@@ -1,6 +1,6 @@
 import React from "react";
-import {Component, ComponentProps} from "../grove/Component";
 import Box from "@mui/material/Box";
+import {Component, ComponentProps} from "../../grove/src/Component";
 
 export interface LBox {
     children: ComponentProps[]

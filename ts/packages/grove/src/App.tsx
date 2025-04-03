@@ -1,6 +1,6 @@
 import React, {useEffect, useReducer} from "react";
 import {Component, ComponentProps} from "./Component";
-import {resolvePath} from "../grovex/routing";
+import {resolvePath} from "./routing";
 import {ApiHandlers, AppContext, appReducer} from "./app-state";
 
 export interface AppProps {
