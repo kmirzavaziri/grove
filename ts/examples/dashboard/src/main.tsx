@@ -5,7 +5,7 @@ import {CssBaseline} from "@mui/material";
 import {initRouting} from "@grove/grove";
 import {base_url} from './const';
 import AppTheme from "./theme/AppTheme";
-import "@grove/grovex/src/setup";
+import "@grove/grovex";
 import "./setup";
 
 initRouting(new Map<string, string>([

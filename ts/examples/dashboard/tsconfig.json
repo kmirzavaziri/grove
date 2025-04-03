@@ -16,5 +16,5 @@
       "@grove/grovex": ["../../packages/grovex/src"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "vite.config.ts"]
 }
