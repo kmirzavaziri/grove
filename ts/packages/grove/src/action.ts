@@ -1,12 +1,12 @@
-import {AppContextValue} from "./app-state";
+import type {AppContextValue} from './app-state';
 
-type Action<T> = (appContextValue: AppContextValue, payload: T) => void
+type Action<T> = (appContextValue: AppContextValue, payload: T) => void;
 
 export const actionRegistry = new Map<string, Action<any>>();
 
 export interface ActionProps {
     type: string;
-    payload: { [key: string]: any };
+    payload: {[key: string]: any};
 }
 
 export function perform(appContextValue: AppContextValue, props: ActionProps) {

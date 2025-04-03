@@ -1,7 +1,10 @@
-import React, {useEffect, useReducer} from "react";
-import {Component, ComponentProps} from "./Component";
-import {resolvePath} from "./routing";
-import {ApiHandlers, AppContext, appReducer} from "./app-state";
+import React, {useEffect, useReducer} from 'react';
+
+import type {ApiHandlers} from './app-state';
+import {AppContext, appReducer} from './app-state';
+import type {ComponentProps} from './Component';
+import {Component} from './Component';
+import {resolvePath} from './routing';
 
 export interface AppProps {
     apiHandlers: ApiHandlers;
@@ -21,16 +24,19 @@ export const App: React.FC<AppProps> = (props) => {
             return;
         }
 
-        props.apiHandlers.fetch(nodePath, params)
+        props.apiHandlers
+            .fetch(nodePath, params)
             .then((node) => render({path: [], node}))
             .catch(() => render({path: [], node: props.err500}));
     }, [props.apiHandlers, props.err404, props.err500]);
 
-    if (!state.tree) return <Component props={props.loading}/>;
+    if (!state.tree) {
+        return <Component props={props.loading} />;
+    }
 
     return (
         <AppContext.Provider value={{state, render, apiHandlers: props.apiHandlers}}>
-            <Component props={state.tree}/>
+            <Component props={state.tree} />
         </AppContext.Provider>
     );
 };
@@ -38,24 +44,25 @@ export const App: React.FC<AppProps> = (props) => {
 export default App;
 
 export const groveFetch = (groveServer: string) => (nodePath: string[], request?: any) =>
-    fetch(`${groveServer}/fetch/${nodePath.join("/")}`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
+    fetch(`${groveServer}/fetch/${nodePath.join('/')}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(request),
-    })
-        .then((resp) => {
-            if (!resp.ok) throw new Error("Grove API returned error");
-            return resp.json();
-        })
+    }).then((resp) => {
+        if (!resp.ok) {
+            throw new Error('Grove API returned error');
+        }
+        return resp.json();
+    });
 
 export const groveSubmit = (groveServer: string) => (nodePath: string[], request?: any) =>
-    fetch(`${groveServer}/submit/${nodePath.join("/")}`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
+    fetch(`${groveServer}/submit/${nodePath.join('/')}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(request),
-    })
-        .then((resp) => {
-            if (!resp.ok) throw new Error("Grove API returned error");
-            return resp.json();
-        })
-
+    }).then((resp) => {
+        if (!resp.ok) {
+            throw new Error('Grove API returned error');
+        }
+        return resp.json();
+    });
