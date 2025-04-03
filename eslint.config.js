@@ -1,8 +1,8 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import prettier from 'eslint-plugin-prettier';
-import importPlugin from 'eslint-plugin-import';
-import globals from 'globals';
+const typescriptEslint = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
+const prettier = require('eslint-plugin-prettier');
+const importPlugin = require('eslint-plugin-import');
+const globals = require('globals');
 
 module.exports = [
     {
@@ -16,7 +16,7 @@ module.exports = [
                     'ts/packages/grove/tsconfig.json',
                     'ts/packages/grovex/tsconfig.json',
                     'ts/examples/dashboard/tsconfig.json',
-                ]
+                ],
             },
             globals: {
                 ...globals.node,
@@ -45,7 +45,7 @@ module.exports = [
                 {
                     groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
                     'newlines-between': 'always',
-                    alphabetize: { order: 'asc', caseInsensitive: true },
+                    alphabetize: {order: 'asc', caseInsensitive: true},
                 },
             ],
             'import/no-unresolved': 'error',
@@ -55,23 +55,42 @@ module.exports = [
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/no-non-null-assertion': 'error',
             'indent': ['error', 2],
-            'quotes': ['error', 'single', { avoidEscape: true }],
+            'quotes': ['error', 'single', {avoidEscape: true}],
             'semi': ['error', 'always'],
             'comma-dangle': ['error', 'always-multiline'],
             'object-curly-spacing': ['error', 'always'],
             'array-bracket-spacing': ['error', 'never'],
+
+            'import/no-restricted-paths': [
+                'error',
+                {
+                    zones: [
+                        {
+                            target: 'ts/packages/grove/**/*.{ts,tsx}',
+                            from: [
+                                'ts/packages/grovex/**/*.{ts,tsx}',
+                                'ts/examples/dashboard/**/*.{ts,tsx}',
+                            ],
+                        },
+                        {
+                            target: 'ts/packages/grovex/**/*.{ts,tsx}',
+                            from: 'ts/packages/dashboard/**/*.{ts,tsx}',
+                        },
+                    ],
+                },
+            ],
         },
         settings: {
             'import/resolver': {
                 typescript: {
                     alwaysTryTypes: true,
-                    "project": [
+                    project: [
                         'ts/packages/grove/tsconfig.json',
                         'ts/packages/grovex/tsconfig.json',
-                        "ts/examples/dashboard/tsconfig.json"
-                    ]
-                }
-            }
-        }
-    }
+                        'ts/examples/dashboard/tsconfig.json',
+                    ],
+                },
+            },
+        },
+    },
 ];
