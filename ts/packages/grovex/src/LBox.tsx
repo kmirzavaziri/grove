@@ -1,13 +1,17 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import {Component, ComponentProps} from "../../grove/src/Component";
+import Box from '@mui/material/Box';
+import React from 'react';
+
+import type {ComponentProps} from '../../grove/src/Component';
+import {Component} from '../../grove/src/Component';
 
 export interface LBox {
-    children: ComponentProps[]
+    children: ComponentProps[];
 }
 
 export const LBox: React.FC<LBox> = (props) => (
     <Box>
-        {props.children.map(child => (<Component key={child.key} props={child}/>))}
+        {props.children.map((child) => (
+            <Component key={child.key} props={child} />
+        ))}
     </Box>
 );

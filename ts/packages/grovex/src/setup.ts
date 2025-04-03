@@ -1,11 +1,12 @@
-import {componentRegistry} from "@grove/grove";
-import {actionRegistry} from "@grove/grove";
-import {DBreadcrumbs} from "./DBreadcrumbs";
-import {DButton} from "./DButton";
-import {DDivider} from "./DDivider";
+import {componentRegistry, actionRegistry} from '@grove/grove';
+
+import {ARender} from './ARender';
+import {DBreadcrumbs} from './DBreadcrumbs';
+import {DButton} from './DButton';
+import {DDivider} from './DDivider';
 // import {DImage} from "./DImage";
-import {DProfile} from "./DProfile";
-import {DTypography} from "./DTypography";
+import {DProfile} from './DProfile';
+import {DTypography} from './DTypography';
 // import {IBool} from "./IBool";
 // import {IDatetime} from "./IDatetime";
 // import {IList} from "./IList";
@@ -13,18 +14,16 @@ import {DTypography} from "./DTypography";
 // import {INumber} from "./INumber";
 // import {IPhoneNumber} from "./IPhoneNumber";
 // import {ISingleSelect} from "./ISingleSelect";
-import {IText} from "./IText";
+import {IText} from './IText';
 // import {LAccordion} from "./LAccordion";
-import {LBox} from "./LBox";
-import {LFragment} from "./LFragment";
+import {LBox} from './LBox';
+import {LFragment} from './LFragment';
 // import {LGrid} from "./LGrid";
 // import {LMasonry} from "./LMasonry";
-import {LPage} from "./LPage";
+import {LPage} from './LPage';
 // import {LTabs} from "./LTabs";
-import {XClickable} from "./XClickable";
-import {XModal} from "./XModal";
-
-import {ARender} from "./ARender";
+import {XClickable} from './XClickable';
+import {XModal} from './XModal';
 
 componentRegistry
     .set('grovex.DTypography', DTypography)
@@ -50,7 +49,6 @@ componentRegistry
     .set('grovex.LPage', LPage)
     // .set('grovex.LTabs', LTabs)
     .set('grovex.XClickable', XClickable)
-    .set('grovex.XModal', XModal)
+    .set('grovex.XModal', XModal);
 
-actionRegistry
-    .set("grovex.ARender", ARender)
+actionRegistry.set('grovex.ARender', ARender);

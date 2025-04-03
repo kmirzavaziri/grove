@@ -1,9 +1,4 @@
-export type Align =
-    | 'inherit'
-    | 'center'
-    | 'justify'
-    | 'start'
-    | 'end';
+export type Align = 'inherit' | 'center' | 'justify' | 'start' | 'end';
 
 export function align2MUI(align?: Align): 'inherit' | 'left' | 'center' | 'right' | 'justify' | undefined {
     switch (align) {
@@ -18,15 +13,7 @@ export function align2MUI(align?: Align): 'inherit' | 'left' | 'center' | 'right
     }
 }
 
-export type Color =
-    | ''
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'error'
-    | 'info'
-    | 'warning'
-    | string;
+export type Color = '' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | string;
 
 export type DTypographyVariant =
     | 'inherit'
@@ -44,22 +31,8 @@ export type DTypographyVariant =
     | 'subtitle1'
     | 'subtitle2';
 
-export type DButtonVariant =
-    | 'item'
-    | 'contained'
-    | 'outlined'
-    | 'text';
+export type DButtonVariant = 'item' | 'contained' | 'outlined' | 'text';
 
-export type Size = ''
-    | 'small'
-    | 'medium'
-    | 'large'
-    | string;
+export type Size = '' | 'small' | 'medium' | 'large' | string;
 
-export type ITextVariant =
-    | 'text'
-    | 'textarea'
-    | 'password'
-    | 'email'
-    | 'int'
-    | 'float';
+export type ITextVariant = 'text' | 'textarea' | 'password' | 'email' | 'int' | 'float';

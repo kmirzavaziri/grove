@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import MuiBreadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs';
+import type {ActionProps} from '@grove/grove';
+import {useAppContext, perform} from '@grove/grove';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
-import {useAppContext} from "@grove/grove";
-import {ActionProps, perform} from "@grove/grove";
+import MuiBreadcrumbs, {breadcrumbsClasses} from '@mui/material/Breadcrumbs';
+import {styled} from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 
-const Breadcrumbs = styled(MuiBreadcrumbs)(({ theme }) => ({
+const Breadcrumbs = styled(MuiBreadcrumbs)(({theme}) => ({
     margin: theme.spacing(1, 0),
     [`& .${breadcrumbsClasses.separator}`]: {
         color: (theme.vars || theme).palette.action.disabled,
@@ -29,10 +29,7 @@ export interface DBreadcrumbsItem {
 export const DBreadcrumbs: React.FC<DBreadcrumbsProps> = (props) => {
     const appContextValue = useAppContext();
     return (
-        <Breadcrumbs
-            aria-label="breadcrumb"
-            separator={<NavigateNextRoundedIcon fontSize="small" />}
-        >
+        <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextRoundedIcon fontSize="small" />}>
             {props.items.map((item, index) => (
                 <Typography
                     key={index}
@@ -40,7 +37,7 @@ export const DBreadcrumbs: React.FC<DBreadcrumbsProps> = (props) => {
                     sx={{
                         ...(index === props.items.length - 1 && {
                             color: 'text.primary',
-                            fontWeight: 600
+                            fontWeight: 600,
                         }),
                         cursor: 'pointer',
                     }}
@@ -51,4 +48,4 @@ export const DBreadcrumbs: React.FC<DBreadcrumbsProps> = (props) => {
             ))}
         </Breadcrumbs>
     );
-}
+};
