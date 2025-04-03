@@ -11,6 +11,7 @@ export function ASubmit(appContextValue: AppContextValue, props: ASubmitProps): 
     console.log("here")
 
     // TODO state.tree might be null
+    console.log(appContextValue.state)
     // const inputs = extractInputsFromNode(getNodeAt(appContextValue.state.tree!, props.node_path));
 
     const payload = {}; // TODO gather user input values
