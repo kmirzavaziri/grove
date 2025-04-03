@@ -19,6 +19,3 @@ func ActionRenderErrorMessages(payload ActionRenderErrorMessagesPayload) *Action
 		Payload: gex.Marshal(payload),
 	}
 }
-
-// TODO define submit
-// 		we should validate that the given node in payload is submittable somehow?

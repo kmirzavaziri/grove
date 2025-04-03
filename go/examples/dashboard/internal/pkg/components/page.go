@@ -1,8 +1,12 @@
 package components
 
 import (
+	"context"
+
+	"github.com/kmirzavaziri/grove/go/pkg/executor"
 	"github.com/kmirzavaziri/grove/go/pkg/flux"
 	"github.com/kmirzavaziri/grove/go/pkg/gex"
+	"github.com/kmirzavaziri/grove/go/pkg/greq"
 	"github.com/kmirzavaziri/grove/go/pkg/grove"
 	"github.com/kmirzavaziri/grove/go/pkg/grovex"
 	"github.com/kmirzavaziri/grove/go/pkg/grovex/variants"
@@ -51,7 +55,23 @@ func Page(args PageArgs) *grove.Node {
 		}),
 	}
 
-	sidebarStart := []*grove.Node{
+	return grovex.LPage(grovex.LPageArgs{
+		Key:            args.Key,
+		Props:          flux.ReadStatic(grovex.LPageProps{Title: args.Title}),
+		SidebarStart:   sidebarStart(args.Key),
+		SidebarEnd:     sidebarEnd(),
+		NavbarStart:    navbarStart,
+		NavbarEnd:      navbarEnd,
+		SidebarStartXS: sidebarStart(args.Key),
+		SidebarEndXS:   sidebarEnd(),
+		NavbarStartXS:  navbarStart,
+		NavbarEndXS:    navbarEnd,
+		Main:           args.Main,
+	})
+}
+
+func sidebarStart(pageKey string) []*grove.Node {
+	return []*grove.Node{
 		// grovex.XClickable(grovex.XClickableArgs{
 		// 	Key: "avatar_xc",
 		// 	Props: flux.ReadStatic(grovex.XClickableProps{
@@ -75,62 +95,11 @@ func Page(args PageArgs) *grove.Node {
 			Key: "avatar",
 			Props: flux.ReadStatic(grovex.XClickableProps{
 				Action: grovex.ARender(grovex.ARenderPayload{
-					NodePath: []string{args.Key, "sidebar_start", "auth"},
-					// TODO what would be better here, define modal somewhere else and patch here, or completely have it here?
-					Node: grove.MustStaticRender(grovex.XModal(grovex.XModalArgs{
-						Key:   "auth",
-						Props: flux.ReadStatic(grovex.XModalProps{Open: true}),
-						Children: []*grove.Node{
-							grovex.DTypography(grovex.DTypographyArgs{
-								Key: "title",
-								Props: flux.ReadStatic(grovex.DTypographyProps{
-									Text:    "Authenticate",
-									Variant: gex.P(variants.DTypographyVariantH6),
-								}),
-							}),
-							grovex.IText(grovex.ITextArgs{
-								Key: "username",
-								Input: &grove.Input{
-									Key: "username",
-									Def: flux.ReadStatic(grove.InputDef{}),
-								},
-								Props: flux.ReadStatic(grovex.ITextProps{
-									Variant:      gex.P(variants.ITextVariantText),
-									Label:        "Username",
-									AutoComplete: "username",
-								}),
-							}),
-							grovex.IText(grovex.ITextArgs{
-								Key: "password",
-								Input: &grove.Input{
-									Key: "password",
-									Def: flux.ReadStatic(grove.InputDef{}),
-								},
-								Props: flux.ReadStatic(grovex.ITextProps{
-									Variant:      gex.P(variants.ITextVariantPassword),
-									Label:        "Password",
-									AutoComplete: "password",
-								}),
-							}),
-							grovex.XClickable(grovex.XClickableArgs{
-								Key: "login",
-								Props: flux.ReadStatic(grovex.XClickableProps{
-									// TODO
-									Action: nil,
-								}),
-								Children: []*grove.Node{
-									grovex.DButton(grovex.DButtonArgs{
-										Key: "login",
-										Props: flux.ReadStatic(grovex.DButtonProps{
-											Text:      "Login",
-											Variant:   gex.P(variants.DButtonVariantOutlined),
-											FullWidth: true,
-										}),
-									}),
-								},
-							}),
-						},
-					})),
+					NodePath: []string{pageKey, "sidebar_start", "auth"},
+					Patch:    true,
+					Node: &grove.RenderedNode{
+						Props: gex.Marshal(grovex.XModalProps{Open: true}),
+					},
 				}),
 			}),
 			Children: []*grove.Node{
@@ -143,11 +112,76 @@ func Page(args PageArgs) *grove.Node {
 				}),
 			},
 		}),
+		grovex.MForm(
+			grovex.XModal(grovex.XModalArgs{
+				Key:   "auth",
+				Props: flux.ReadStatic(grovex.XModalProps{}),
+				Children: []*grove.Node{
+					grovex.DTypography(grovex.DTypographyArgs{
+						Key: "title",
+						Props: flux.ReadStatic(grovex.DTypographyProps{
+							Text:    "Authenticate",
+							Variant: gex.P(variants.DTypographyVariantH6),
+						}),
+					}),
+					grovex.IText(grovex.ITextArgs{
+						Key: "username",
+						Input: &grove.Input{
+							Key: "username",
+							Def: flux.ReadStatic(grove.InputDef{}),
+						},
+						Props: flux.ReadStatic(grovex.ITextProps{
+							Variant:      gex.P(variants.ITextVariantText),
+							Label:        "Username",
+							AutoComplete: "username",
+						}),
+					}),
+					grovex.IText(grovex.ITextArgs{
+						Key: "password",
+						Input: &grove.Input{
+							Key: "password",
+							Def: flux.ReadStatic(grove.InputDef{}),
+						},
+						Props: flux.ReadStatic(grovex.ITextProps{
+							Variant:      gex.P(variants.ITextVariantPassword),
+							Label:        "Password",
+							AutoComplete: "password",
+						}),
+					}),
+					grovex.XClickable(grovex.XClickableArgs{
+						Key: "login",
+						Props: flux.ReadStatic(grovex.XClickableProps{
+							Action: grovex.ASubmit(grovex.ASubmitPayload{
+								NodePath: []string{pageKey, "sidebar_start", "auth"},
+							}),
+						}),
+						Children: []*grove.Node{
+							grovex.DButton(grovex.DButtonArgs{
+								Key: "login",
+								Props: flux.ReadStatic(grovex.DButtonProps{
+									Text:      "Login",
+									Variant:   gex.P(variants.DButtonVariantOutlined),
+									FullWidth: true,
+								}),
+							}),
+						},
+					}),
+				},
+			}),
+			flux.ActInline(
+				nil,
+				func(ctx context.Context, request greq.Request, executorResults executor.Results) (*grove.Action, error) {
+					return nil, nil
+				},
+			),
+		),
 		grovex.DDivider(grovex.DDividerArgs{Key: "avatar_divider"}),
-		menu(args.Key),
+		menu(pageKey),
 	}
+}
 
-	sidebarEnd := []*grove.Node{
+func sidebarEnd() []*grove.Node {
+	return []*grove.Node{
 		grovex.XClickable(grovex.XClickableArgs{
 			Key: "logout",
 			Props: flux.ReadStatic(grovex.XClickableProps{
@@ -167,20 +201,6 @@ func Page(args PageArgs) *grove.Node {
 			},
 		}),
 	}
-
-	return grovex.LPage(grovex.LPageArgs{
-		Key:            args.Key,
-		Props:          flux.ReadStatic(grovex.LPageProps{Title: args.Title}),
-		SidebarStart:   sidebarStart,
-		SidebarEnd:     sidebarEnd,
-		NavbarStart:    navbarStart,
-		NavbarEnd:      navbarEnd,
-		SidebarStartXS: sidebarStart,
-		SidebarEndXS:   sidebarEnd,
-		NavbarStartXS:  navbarStart,
-		NavbarEndXS:    navbarEnd,
-		Main:           args.Main,
-	})
 }
 
 func menu(pageKey string) *grove.Node {

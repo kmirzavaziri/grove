@@ -1,9 +1,10 @@
 package grove
 
 import (
+	"strings"
+
 	"github.com/kmirzavaziri/grove/go/pkg/flux"
 	"github.com/kmirzavaziri/grove/go/pkg/greq"
-	"strings"
 
 	"github.com/kmirzavaziri/grove/go/pkg/gex"
 	"github.com/kmirzavaziri/grove/go/pkg/grr"

@@ -3,4 +3,5 @@ export * from './App';
 export * from './app-state';
 export * from './Component';
 export * from './input';
+export * from './recursion';
 export * from './routing';

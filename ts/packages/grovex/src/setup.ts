@@ -1,6 +1,7 @@
 import {componentRegistry, actionRegistry} from '@grove/grove';
 
 import {ARender} from './ARender';
+import {ASubmit} from './ASubmit';
 import {DBreadcrumbs} from './DBreadcrumbs';
 import {DButton} from './DButton';
 import {DDivider} from './DDivider';
@@ -51,4 +52,6 @@ componentRegistry
     .set('grovex.XClickable', XClickable)
     .set('grovex.XModal', XModal);
 
-actionRegistry.set('grovex.ARender', ARender);
+actionRegistry
+    .set('grovex.ARender', ARender)
+    .set('grovex.ASubmit', ASubmit);

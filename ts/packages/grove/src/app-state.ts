@@ -3,7 +3,7 @@ import {createContext, useContext} from 'react';
 
 import type {ActionProps} from './action';
 import type {ComponentProps} from './Component';
-import {patchComponentProps} from './Component';
+import {setNodeAt} from './recursion';
 import type {Struct} from './value';
 
 export interface AppState {
@@ -31,34 +31,6 @@ export function useAppContext(): AppContextValue {
     return context;
 }
 
-function updateTree(tree: ComponentProps, path: string[], node: ComponentProps, patch: boolean): void {
-    if (!tree.children) {
-        tree.children = [];
-    }
-
-    const childIndex = tree.children.findIndex((child) => child.key === path[1]);
-
-    if (path.length === 2) {
-        if (childIndex >= 0) {
-            if (patch) {
-                patchComponentProps(tree.children[childIndex], node);
-            } else {
-                tree.children[childIndex] = {...node};
-            }
-        } else {
-            tree.children.push({...node});
-        }
-
-        return;
-    }
-
-    if (childIndex === -1) {
-        throw new Error(`Path ${path.join('.')} not found: no child with key ${path[1]}`);
-    }
-
-    updateTree(tree.children[childIndex], path.slice(1), node, patch);
-}
-
 export function appReducer(state: AppState, action: {path: string[]; node: ComponentProps; patch?: boolean}): AppState {
     if (!state.tree) {
         state.tree = action.node;
@@ -69,7 +41,10 @@ export function appReducer(state: AppState, action: {path: string[]; node: Compo
     if (path.length === 1) {
         state.tree = action.node;
     } else {
-        updateTree(state.tree, path, action.node, action.patch || false);
+        if (state.tree.key !== path[0]) {
+            throw new Error(`Path ${path.join('.')} not found: tree root is not ${path[0]}, it is ${state.tree.key}`);
+        }
+        setNodeAt(state.tree, path.slice(1), action.node, action.patch || false);
     }
 
     function populatePath(node: ComponentProps, parentPath: string[] = []): void {
