@@ -1,12 +1,14 @@
 import type {MatchFunction} from 'path-to-regexp';
 import {match, compile} from 'path-to-regexp';
 
+import type {Struct} from './value';
+
 export type Params = {[key: string]: string};
 
-let matchers: [MatchFunction<any>, string][] = [];
+let matchers: [MatchFunction<Struct>, string][] = [];
 let nodePathToPattern: Map<string, string> = new Map();
 
-export function initRouting(routes: Map<string, string>) {
+export function initRouting(routes: Map<string, string>): void {
     matchers = Array.from(routes.entries()).map(([pattern, nodePath]) => [
         match(pattern, {decode: decodeURIComponent}),
         nodePath,

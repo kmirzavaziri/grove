@@ -4,14 +4,15 @@ import {createContext, useContext} from 'react';
 import type {ActionProps} from './action';
 import type {ComponentProps} from './Component';
 import {patchComponentProps} from './Component';
+import type {Struct} from './value';
 
 export interface AppState {
     tree: ComponentProps | null;
 }
 
 export interface ApiHandlers {
-    fetch: (nodePath: string[], request?: any) => Promise<ComponentProps>;
-    submit: (nodePath: string[], request?: any) => Promise<ActionProps>;
+    fetch: (nodePath: string[], request?: Struct) => Promise<ComponentProps>;
+    submit: (nodePath: string[], request?: Struct) => Promise<ActionProps>;
 }
 
 export interface AppContextValue {
@@ -22,7 +23,7 @@ export interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
-export function useAppContext() {
+export function useAppContext(): AppContextValue {
     const context = useContext(AppContext);
     if (!context) {
         throw new Error('useAppContext must be used within an AppProvider');
@@ -30,7 +31,7 @@ export function useAppContext() {
     return context;
 }
 
-function updateTree(tree: ComponentProps, path: string[], node: ComponentProps, patch: boolean) {
+function updateTree(tree: ComponentProps, path: string[], node: ComponentProps, patch: boolean): void {
     if (!tree.children) {
         tree.children = [];
     }
@@ -58,7 +59,7 @@ function updateTree(tree: ComponentProps, path: string[], node: ComponentProps, 
     updateTree(tree.children[childIndex], path.slice(1), node, patch);
 }
 
-export function appReducer(state: AppState, action: {path: string[]; node: ComponentProps; patch?: boolean}) {
+export function appReducer(state: AppState, action: {path: string[]; node: ComponentProps; patch?: boolean}): AppState {
     if (!state.tree) {
         state.tree = action.node;
     }
@@ -71,7 +72,7 @@ export function appReducer(state: AppState, action: {path: string[]; node: Compo
         updateTree(state.tree, path, action.node, action.patch || false);
     }
 
-    function populatePath(node: ComponentProps, parentPath: string[] = []) {
+    function populatePath(node: ComponentProps, parentPath: string[] = []): void {
         if (node.key === undefined) {
             node.key = '';
         }

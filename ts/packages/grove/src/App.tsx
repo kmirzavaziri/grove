@@ -5,6 +5,7 @@ import {AppContext, appReducer} from './app-state';
 import type {ComponentProps} from './Component';
 import {Component} from './Component';
 import {resolvePath} from './routing';
+import {Struct} from './value';
 
 export interface AppProps {
     apiHandlers: ApiHandlers;
@@ -43,7 +44,7 @@ export const App: React.FC<AppProps> = (props) => {
 
 export default App;
 
-export const groveFetch = (groveServer: string) => (nodePath: string[], request?: any) =>
+export const groveFetch = (groveServer: string) => (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
     fetch(`${groveServer}/fetch/${nodePath.join('/')}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -55,7 +56,7 @@ export const groveFetch = (groveServer: string) => (nodePath: string[], request?
         return resp.json();
     });
 
-export const groveSubmit = (groveServer: string) => (nodePath: string[], request?: any) =>
+export const groveSubmit = (groveServer: string) => (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
     fetch(`${groveServer}/submit/${nodePath.join('/')}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},

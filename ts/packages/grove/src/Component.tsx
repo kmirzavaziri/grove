@@ -4,15 +4,16 @@ import React from 'react';
 import {DTypography} from '../../grovex/src/DTypography';
 
 import type {Input} from './input';
+import type {Struct} from './value';
 
-export const componentRegistry = new Map<string, React.ComponentType<any>>();
+export const componentRegistry = new Map<string, React.ComponentType<Struct>>();
 
 export interface ComponentProps {
     type?: string;
     key?: string;
     path?: string[];
     role?: string;
-    props?: {[key: string]: any};
+    props?: Struct;
     input?: Input;
     children?: ComponentProps[];
 }
@@ -40,7 +41,7 @@ export const Component: React.FC<{props: ComponentProps}> = ({props}) => {
     );
 };
 
-export const patchComponentProps = (dest: ComponentProps, src: ComponentProps) => {
+export const patchComponentProps = (dest: ComponentProps, src: ComponentProps): void => {
     if (src.type) {
         dest.type = src.type;
     }
