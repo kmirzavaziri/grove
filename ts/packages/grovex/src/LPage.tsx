@@ -28,7 +28,7 @@ export const LPage: React.FC<LPageProps> = (props) => {
 
     const [open, setOpen] = React.useState(false);
 
-    const toggleDrawer = (newOpen: boolean) => () => {
+    const toggleDrawer = (newOpen: boolean) => (): void => {
         setOpen(newOpen);
     };
 
