@@ -42,12 +42,8 @@ export function appReducer(
         state.tree = {};
     }
 
-    if (state.tree.key !== action.path[0]) {
-        throw new Error(
-            `${action.path.join('.')} not found: tree root is not ${action.path[0]}, it is ${state.tree.key}`,
-        );
-    }
-
+    // TODO don't modify, return a new state
+    // TODO does react handle partial updates or re-renders everything?
     action.modify(getNodeAt(state.tree, action.path.slice(1)));
 
     updatePaths(state.tree);

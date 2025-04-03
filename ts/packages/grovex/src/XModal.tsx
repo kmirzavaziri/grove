@@ -24,7 +24,8 @@ export const XModal: React.FC<XModalProps> = (props) => {
     const handleClose = (): void => {
         if (props.path) {
             dispatch({
-                path: props.path, modify: (node: ComponentProps) => {
+                path: props.path,
+                modify: (node: ComponentProps) => {
                     if (node.props) {
                         node.props.open = false;
                     }

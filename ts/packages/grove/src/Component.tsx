@@ -16,36 +16,13 @@ export interface ComponentProps {
     path?: string[];
 }
 
-export const Component: React.FC<{props: ComponentProps}> = ({props}) => {
-    if (props.type === undefined) {
-        props.type = '';
-    }
-
-    if (props.key === undefined) {
-        props.key = '';
-    }
-
-    if (props.path === undefined) {
-        props.path = [];
-    }
-
-    const ComponentFn = componentRegistry.get(props.type);
-    if (ComponentFn === undefined) {
-        return <div style="color: red;">Component ${props.type} not found</div>;
-    }
-
-    return (
-        <ComponentFn key={props.key} path={props.path} children={props.children} input={props.input} {...props.props} />
-    );
-};
-
 export const modifyComponentProps = (dest: ComponentProps, src: ComponentProps, patch: boolean): void => {
     if (patch) {
         patchComponentProps(dest, src);
     } else {
         overrideComponentProps(dest, src);
     }
-}
+};
 
 export const patchComponentProps = (dest: ComponentProps, src: ComponentProps): void => {
     if (src.type) {
@@ -78,4 +55,25 @@ export const overrideComponentProps = (dest: ComponentProps, src: ComponentProps
     dest.props = src.props;
     dest.input = src.input;
     dest.children = src.children;
+};
+
+export const Component: React.FC<{props: ComponentProps}> = ({props}) => {
+    const np = {
+        type: props.type ?? '',
+        key: props.key ?? '',
+        path: props.path ?? [],
+        role: props.role,
+        props: props.props,
+        input: props.input,
+        children: props.children,
+    };
+
+    const ComponentFn = componentRegistry.get(np.type);
+    if (ComponentFn === undefined) {
+        return <div style="color: red;">Component ${np.type} not found</div>;
+    }
+
+    return (
+        <ComponentFn key={np.key} path={np.path} children={np.children} input={np.input} {...np.props} />
+    );
 };
