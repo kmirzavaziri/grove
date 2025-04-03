@@ -4,7 +4,7 @@
 GOBIN = $(shell go env GOPATH)
 GO_LINTER = $(GOBIN)/golangci-lint
 GO_LINTER_VERSION = 1.55.0
-
+TS_PM = pnpm
 
 ########################################################################################################################
 # Examples
@@ -25,7 +25,7 @@ ifndef name
 	@echo "Error: 'name' variable required (e.g., make example-client name=dashboard)"
 	@exit 1
 endif
-	cd ts/examples/$(name) && pnpm install && pnpm run dev
+	cd ts/examples/$(name) && $(TS_PM) install && $(TS_PM) run dev
 
 .PHONY: example
 example:
@@ -79,5 +79,8 @@ ts-test:
 # TypeScript - Lint
 .PHONY: ts-lint
 ts-lint:
-	# TODO: Add npm lint command for TS
-	@echo "TypeScript linting not implemented yet"
+	$(TS_PM) lint
+
+.PHONY: ts-lint-fix
+ts-lint-fix:
+	$(TS_PM) lint:fix
