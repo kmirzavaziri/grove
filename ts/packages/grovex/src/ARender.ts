@@ -1,5 +1,6 @@
-import type {ComponentProps, reverseRoute, AppContextValue} from '@grove/grove';
-import {Struct} from '@grove/grove/src/value';
+import type {ComponentProps, AppContextValue} from '@grove/grove';
+import {reverseRoute} from '@grove/grove';
+import type {Struct} from '@grove/grove/src/value';
 
 export interface ARenderProps {
     node_path: string[];
