@@ -44,30 +44,30 @@ export const App: React.FC<AppProps> = (props) => {
 
 export const groveFetch =
     (groveServer: string) =>
-    (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
-        fetch(`${groveServer}/fetch/${nodePath.join('/')}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(request),
-        }).then((resp) => {
-            if (!resp.ok) {
-                throw new Error('Grove API returned error');
-            }
-            return resp.json();
-        });
+        (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
+            fetch(`${groveServer}/fetch/${nodePath.join('/')}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(request),
+            }).then((resp) => {
+                if (!resp.ok) {
+                    throw new Error('Grove API returned error');
+                }
+                return resp.json();
+            });
 
 export const groveSubmit =
     (groveServer: string) =>
-    (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
-        fetch(`${groveServer}/submit/${nodePath.join('/')}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(request),
-        }).then((resp) => {
-            if (!resp.ok) {
-                throw new Error('Grove API returned error');
-            }
-            return resp.json();
-        });
+        (nodePath: string[], request?: Struct): Promise<ComponentProps> =>
+            fetch(`${groveServer}/submit/${nodePath.join('/')}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(request),
+            }).then((resp) => {
+                if (!resp.ok) {
+                    throw new Error('Grove API returned error');
+                }
+                return resp.json();
+            });
 
 export default App;

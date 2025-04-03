@@ -1,8 +1,5 @@
 import React from 'react';
 
-// TODO do not use grovex from grove // TODO add allowed import DAG as a lint rule to both ts & go
-import {DTypography} from '../../grovex/src/DTypography';
-
 import type {Input} from './input';
 import type {Struct} from './value';
 
@@ -33,7 +30,7 @@ export const Component: React.FC<{props: ComponentProps}> = ({props}) => {
 
     const ComponentFn = componentRegistry.get(props.type);
     if (ComponentFn === undefined) {
-        return <DTypography text={`Component ${props.type} not found`} color="error" />;
+        return <div style="color: red;">Component ${props.type} not found</div>;
     }
 
     return (
