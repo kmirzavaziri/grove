@@ -15,7 +15,7 @@ type DButtonProps struct {
 	Text string
 
 	Color     *variants.Color
-	Variant   *variants.ButtonVariant
+	Variant   *variants.DButtonVariant
 	FullWidth bool
 	Disabled  bool
 	Selected  bool

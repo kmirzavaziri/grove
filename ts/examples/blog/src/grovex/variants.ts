@@ -26,7 +26,7 @@ export type Color = ''
     | 'warning'
     | string;
 
-export type TypographyVariant = 'inherit'
+export type DTypographyVariant = 'inherit'
     | 'body1'
     | 'body2'
     | 'button'
@@ -41,7 +41,7 @@ export type TypographyVariant = 'inherit'
     | 'subtitle1'
     | 'subtitle2';
 
-export type ButtonVariant = 'item'
+export type DButtonVariant = 'item'
     | 'contained'
     | 'outlined'
     | 'text';
@@ -51,3 +51,10 @@ export type Size = ''
     | 'medium'
     | 'large'
     | string;
+
+export type ITextVariant = 'text'
+    | 'textarea'
+    | 'password'
+    | 'email'
+    | 'int'
+    | 'float';

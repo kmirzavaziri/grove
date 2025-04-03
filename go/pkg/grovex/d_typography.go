@@ -17,7 +17,7 @@ type DTypographyProps struct {
 	Text    string
 	Align   *variants.Align
 	Color   *variants.Color
-	Variant *variants.TypographyVariant
+	Variant *variants.DTypographyVariant
 }
 
 func DTypography(args DTypographyArgs) *grove.Node {

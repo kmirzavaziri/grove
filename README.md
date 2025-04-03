@@ -130,3 +130,4 @@ TODO
 6. Fix the common guard `Type` marshalling procedure. (`func (v Type) Marshal() *gex.Value`)
 7. Use match for email guard instead of new script?
 8. Put data besides input and children when sending to fe in render? 
+9. Add unknown value to enums (variants), instead of pointer for nil.

@@ -1,6 +1,7 @@
 import React from "react";
 // TODO do not use grovex from grove // TODO add allowed import DAG as a lint rule to both ts & go
 import {DTypography} from "../grovex/DTypography";
+import {Input} from "./input";
 
 export const componentRegistry = new Map<string, React.ComponentType<any>>();
 
@@ -10,6 +11,7 @@ export interface ComponentProps {
     path?: string[];
     role?: string;
     props?: { [key: string]: any };
+    input?: Input;
     children?: ComponentProps[];
 }
 
@@ -31,7 +33,9 @@ export const Component: React.FC<{ props: ComponentProps }> = ({props}) => {
         return <DTypography text={`Component ${props.type} not found`} color="error"/>;
     }
 
-    return <ComponentFn key={props.key} path={props.path} children={props.children} {...props.props}/>;
+    return <ComponentFn
+        key={props.key} path={props.path} children={props.children} input={props.input} {...props.props}
+    />;
 };
 
 export const patchComponentProps = (dest: ComponentProps, src: ComponentProps) => {

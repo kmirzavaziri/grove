@@ -3,30 +3,8 @@ package grovex
 import (
 	"github.com/kmirzavaziri/grove/go/pkg/flux"
 	"github.com/kmirzavaziri/grove/go/pkg/grove"
+	"github.com/kmirzavaziri/grove/go/pkg/grovex/variants"
 )
-
-type ITextType string
-
-const (
-	ITextTypeText     ITextType = "TEXT"
-	ITextTypeTextarea ITextType = "TEXTAREA"
-	ITextTypePassword ITextType = "PASSWORD"
-	ITextTypeEmail    ITextType = "EMAIL"
-	ITextTypeInt      ITextType = "INT"
-	ITextTypeFloat    ITextType = "FLOAT"
-)
-
-// TODO add per request validation by IText by adding middleware to Props so that we can verify user defined flux
-//  results, and raise error if the value is not in this list.
-
-var ITextTypeOptions = map[ITextType]struct{}{
-	ITextTypeText:     {},
-	ITextTypeTextarea: {},
-	ITextTypePassword: {},
-	ITextTypeEmail:    {},
-	ITextTypeInt:      {},
-	ITextTypeFloat:    {},
-}
 
 type ITextArgs struct {
 	Key   string
@@ -35,12 +13,11 @@ type ITextArgs struct {
 }
 
 type ITextProps struct {
-	Label       string
-	Hint        string
-	Placeholder string
-	Type        ITextType
-	Prefix      string
-	Suffix      string
+	Label   string
+	Variant *variants.ITextVariant
+
+	Placeholder  string
+	AutoComplete string
 }
 
 func IText(args ITextArgs) *grove.Node {
@@ -49,8 +26,10 @@ func IText(args ITextArgs) *grove.Node {
 	}
 
 	return &grove.Node{
-		Type:  "grovex.IText",
-		Key:   args.Key,
+		Type: "grovex.IText",
+		Key:  args.Key,
+		// TODO add per request validation by IText by adding middleware to Props so that we can verify user defined flux
+		//  results, and raise error if the value is not in this list.
 		Props: flux.ReadValue(args.Props),
 		Input: args.Input,
 	}

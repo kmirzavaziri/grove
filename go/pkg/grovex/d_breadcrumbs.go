@@ -11,7 +11,12 @@ type DBreadcrumbsArgs struct {
 }
 
 type DBreadcrumbsProps struct {
-	Items []string
+	Items []DBreadcrumbsItem
+}
+
+type DBreadcrumbsItem struct {
+	Title  string
+	Action *grove.Action
 }
 
 func DBreadcrumbs(args DBreadcrumbsArgs) *grove.Node {

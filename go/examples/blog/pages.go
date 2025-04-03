@@ -11,15 +11,18 @@ var pages = []*grove.Node{
 		Title: "Home",
 	}),
 	components.Page(components.PageArgs{
-		Key:   "users",
-		Title: "Users",
+		Key:         "users",
+		Title:       "Users",
+		Breadcrumbs: []string{"Users"},
 	}),
 	components.Page(components.PageArgs{
-		Key:   "permissions",
-		Title: "Permissions",
+		Key:         "permissions",
+		Title:       "Permissions",
+		Breadcrumbs: []string{"Permissions"},
 	}),
 	components.Page(components.PageArgs{
-		Key:   "events",
-		Title: "Events",
+		Key:         "events",
+		Title:       "Events",
+		Breadcrumbs: []string{"Events"},
 	}),
 }

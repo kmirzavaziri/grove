@@ -9,17 +9,34 @@ import (
 )
 
 type PageArgs struct {
-	Key   string
-	Title string
-	Main  []*grove.Node
+	Key         string
+	Title       string
+	Main        []*grove.Node
+	Breadcrumbs []string
 }
 
 func Page(args PageArgs) *grove.Node {
+	breadcrumbItems := make([]grovex.DBreadcrumbsItem, 0, len(args.Breadcrumbs)+1)
+
+	breadcrumbItems = append(breadcrumbItems, grovex.DBreadcrumbsItem{
+		Title: "Dashboard",
+		Action: grovex.ARender(grovex.ARenderPayload{
+			NodePath:      []string{"home"},
+			UpdateHistory: true,
+		}),
+	})
+
+	for _, bc := range args.Breadcrumbs {
+		breadcrumbItems = append(breadcrumbItems, grovex.DBreadcrumbsItem{
+			Title: bc,
+		})
+	}
+
 	navbarStart := []*grove.Node{
 		grovex.DBreadcrumbs(grovex.DBreadcrumbsArgs{
 			Key: "breadcrumbs",
 			Props: flux.ReadStatic(grovex.DBreadcrumbsProps{
-				Items: []string{"Dashboard", args.Title},
+				Items: breadcrumbItems,
 			}),
 		}),
 	}
@@ -29,7 +46,7 @@ func Page(args PageArgs) *grove.Node {
 			Key: "date",
 			Props: flux.ReadStatic(grovex.DTypographyProps{
 				Text:    "March 30, 2025",
-				Variant: gex.P(variants.TypographyVariantBody2),
+				Variant: gex.P(variants.DTypographyVariantBody2),
 			}),
 		}),
 	}
@@ -65,11 +82,52 @@ func Page(args PageArgs) *grove.Node {
 						Props: flux.ReadStatic(grovex.XModalProps{Open: true}),
 						Children: []*grove.Node{
 							grovex.DTypography(grovex.DTypographyArgs{
-								Key: "date",
+								Key: "title",
 								Props: flux.ReadStatic(grovex.DTypographyProps{
-									Text:    "Hello",
-									Variant: gex.P(variants.TypographyVariantH3),
+									Text:    "Authenticate",
+									Variant: gex.P(variants.DTypographyVariantH6),
 								}),
+							}),
+							grovex.IText(grovex.ITextArgs{
+								Key: "username",
+								Input: &grove.Input{
+									Key: "username",
+									Def: flux.ReadStatic(grove.InputDef{}),
+								},
+								Props: flux.ReadStatic(grovex.ITextProps{
+									Variant:      gex.P(variants.ITextVariantText),
+									Label:        "Username",
+									AutoComplete: "username",
+								}),
+							}),
+							grovex.IText(grovex.ITextArgs{
+								Key: "password",
+								Input: &grove.Input{
+									Key: "password",
+									Def: flux.ReadStatic(grove.InputDef{}),
+								},
+								Props: flux.ReadStatic(grovex.ITextProps{
+									Variant:      gex.P(variants.ITextVariantPassword),
+									Label:        "Password",
+									AutoComplete: "password",
+								}),
+							}),
+							grovex.XClickable(grovex.XClickableArgs{
+								Key: "login",
+								Props: flux.ReadStatic(grovex.XClickableProps{
+									// TODO
+									Action: nil,
+								}),
+								Children: []*grove.Node{
+									grovex.DButton(grovex.DButtonArgs{
+										Key: "login",
+										Props: flux.ReadStatic(grovex.DButtonProps{
+											Text:      "Login",
+											Variant:   gex.P(variants.DButtonVariantOutlined),
+											FullWidth: true,
+										}),
+									}),
+								},
 							}),
 						},
 					})),
@@ -101,7 +159,7 @@ func Page(args PageArgs) *grove.Node {
 					Key: "logout",
 					Props: flux.ReadStatic(grovex.DButtonProps{
 						Text:      "Logout",
-						Variant:   gex.P(variants.ButtonVariantOutlined),
+						Variant:   gex.P(variants.DButtonVariantOutlined),
 						FullWidth: true,
 						StartIcon: gex.P(variants.IconLogoutRounded),
 					}),
@@ -150,7 +208,7 @@ func menuItem(key string, icon variants.Icon, text string, selected bool) *grove
 				Key: "button",
 				Props: flux.ReadStatic(grovex.DButtonProps{
 					Text:      text,
-					Variant:   gex.P(variants.ButtonVariantItem),
+					Variant:   gex.P(variants.DButtonVariantItem),
 					FullWidth: true,
 					Selected:  selected,
 					StartIcon: gex.P(icon),

@@ -4,14 +4,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import {ButtonVariant, Color, Size} from "./enums";
+import {DButtonVariant, Color, Size} from "./variants";
 import {DynamicIcon} from "./DynamicIcon";
 
 export interface DButton {
     text: string
 
     color?: Color
-    variant?: ButtonVariant
+    variant?: DButtonVariant
     full_width: boolean
     disabled: boolean
     selected: boolean
@@ -36,6 +36,7 @@ export const DButton: React.FC<DButton> = (props) => (
             fullWidth={props.full_width}
             startIcon={props.start_icon ? <DynamicIcon iconName={props.start_icon}/> : null}
             endIcon={props.end_icon ? <DynamicIcon iconName={props.end_icon}/> : null}
+            sx={{my: 1}}
         >
             {props.text}
         </Button>)}

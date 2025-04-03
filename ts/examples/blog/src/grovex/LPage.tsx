@@ -75,9 +75,7 @@ export const LPage: React.FC<LPageProps> = (props) => {
             </Box>)}
             {(sidebarEnd && <>
                 <DDivider/>
-                <Stack sx={{p: 1}}>
-                    <Component props={sidebarEnd}/>
-                </Stack>
+                <Component props={sidebarEnd}/>
             </>)}
         </Drawer>
         <AppBar
@@ -131,7 +129,7 @@ export const LPage: React.FC<LPageProps> = (props) => {
                         color="error"
                         variant="dot"
                         invisible={true}
-                        sx={{ [`& .${badgeClasses.badge}`]: { right: 2, top: 2 } }}
+                        sx={{[`& .${badgeClasses.badge}`]: {right: 2, top: 2}}}
                     >
                         <IconButton size="small" aria-label="menu" onClick={toggleDrawer(true)}>
                             <MenuRoundedIcon/>
@@ -168,9 +166,7 @@ export const LPage: React.FC<LPageProps> = (props) => {
                             </Box>)}
                             {(sidebarEndXS && <>
                                 <Divider/>
-                                <Stack sx={{p: 1}}>
-                                    <Component props={sidebarEndXS}/>
-                                </Stack>
+                                <Component props={sidebarEndXS}/>
                             </>)}
                         </Stack>
                     </Drawer>

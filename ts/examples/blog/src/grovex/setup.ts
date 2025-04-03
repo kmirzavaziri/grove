@@ -12,7 +12,7 @@ import {DTypography} from "./DTypography";
 // import {INumber} from "./INumber";
 // import {IPhoneNumber} from "./IPhoneNumber";
 // import {ISingleSelect} from "./ISingleSelect";
-// import {IText} from "./IText";
+import {IText} from "./IText";
 // import {LAccordion} from "./LAccordion";
 import {LBox} from "./LBox";
 import {LFragment} from "./LFragment";
@@ -41,7 +41,7 @@ componentRegistry
     // .set('grovex.INumber', INumber)
     // .set('grovex.IPhoneNumber', IPhoneNumber)
     // .set('grovex.ISingleSelect', ISingleSelect)
-    // .set('grovex.IText', IText)
+    .set('grovex.IText', IText)
     // .set('grovex.LAccordion', LAccordion)
     .set('grovex.LBox', LBox)
     .set('grovex.LFragment', LFragment)
