@@ -54,7 +54,7 @@ module.exports = [
             '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/no-non-null-assertion': 'error',
-            'indent': ['error', 2],
+            'indent': ['error', 4],
             'quotes': ['error', 'single', {avoidEscape: true}],
             'semi': ['error', 'always'],
             'comma-dangle': ['error', 'always-multiline'],
