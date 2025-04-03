@@ -15,20 +15,20 @@ export interface AppProps {
 }
 
 export const App: React.FC<AppProps> = (props) => {
-    const [state, render] = useReducer(appReducer, {tree: null});
+    const [state, dispatch] = useReducer(appReducer, {tree: null});
 
     useEffect(() => {
         const {nodePath, params} = resolvePath(window.location.pathname);
 
         if (!nodePath) {
-            render({path: [], node: props.err404});
+            dispatch({path: [''], node: props.err404});
             return;
         }
 
         props.apiHandlers
             .fetch(nodePath, params)
-            .then((node) => render({path: [], node}))
-            .catch(() => render({path: [], node: props.err500}));
+            .then((node) => dispatch({path: [''], node}))
+            .catch(() => dispatch({path: [''], node: props.err500}));
     }, [props.apiHandlers, props.err404, props.err500]);
 
     if (!state.tree) {
@@ -36,7 +36,7 @@ export const App: React.FC<AppProps> = (props) => {
     }
 
     return (
-        <AppContext.Provider value={{state, render, apiHandlers: props.apiHandlers}}>
+        <AppContext.Provider value={{state, dispatch, apiHandlers: props.apiHandlers}}>
             <Component props={state.tree} />
         </AppContext.Provider>
     );
