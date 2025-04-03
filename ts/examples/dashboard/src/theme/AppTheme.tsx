@@ -13,7 +13,6 @@ import {menuItemClasses} from '@mui/material/MenuItem';
 import {outlinedInputClasses} from '@mui/material/OutlinedInput';
 import {paperClasses} from '@mui/material/Paper';
 import {selectClasses} from '@mui/material/Select';
-import type {Shadows} from '@mui/material/styles';
 import {alpha, createTheme, ThemeProvider} from '@mui/material/styles';
 import type {SvgIconProps} from '@mui/material/SvgIcon';
 import {svgIconClasses} from '@mui/material/SvgIcon';
@@ -46,8 +45,6 @@ declare module '@mui/material/styles' {
         800: string;
         900: string;
     }
-
-    interface PaletteColor extends ColorRange {}
 
     interface Palette {
         baseShadow: string;
@@ -275,15 +272,13 @@ const shape = {
     borderRadius: 8,
 };
 
-// @ts-ignore
-const defaultShadows: Shadows = ['none', 'var(--template-palette-baseShadow)', ...defaultTheme.shadows.slice(2)];
-const shadows = defaultShadows;
+const shadows = ['none', 'var(--template-palette-baseShadow)', ...defaultTheme.shadows.slice(2)];
 
 interface AppThemeProps {
     children: React.ReactNode;
 }
 
-export default function AppTheme(props: AppThemeProps) {
+export default function AppTheme(props: AppThemeProps): JSX.Element {
     const theme = createTheme({
         cssVariables: {
             colorSchemeSelector: 'data-mui-color-scheme',
@@ -378,8 +373,11 @@ export default function AppTheme(props: AppThemeProps) {
                                 style: {
                                     color: 'white',
                                     backgroundColor: brand[300],
-                                    backgroundImage: `linear-gradient(to bottom, ${alpha(brand[400], 0.8)}, ${brand[500]})`,
-                                    boxShadow: `inset 0 2px 0 ${alpha(brand[200], 0.2)}, inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
+                                    backgroundImage:
+                                        'linear-gradient(to bottom, ' + `${alpha(brand[400], 0.8)}, ${brand[500]})`,
+                                    boxShadow:
+                                        `inset 0 2px 0 ${alpha(brand[200], 0.2)}, ` +
+                                        `inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
                                     border: `1px solid ${brand[500]}`,
                                     '&:hover': {
                                         backgroundColor: brand[700],
@@ -1061,7 +1059,9 @@ export default function AppTheme(props: AppThemeProps) {
                             borderRadius: (theme.vars || theme).shape.borderRadius,
                             borderColor: gray[700],
                             backgroundColor: (theme.vars || theme).palette.background.paper,
-                            boxShadow: `inset 0 1px 0 1px ${alpha(gray[700], 0.15)}, inset 0 -1px 0 1px hsla(220, 0%, 0%, 0.7)`,
+                            boxShadow:
+                                `inset 0 1px 0 1px ${alpha(gray[700], 0.15)}, inset 0 ` +
+                                '-1px 0 1px hsla(220, 0%, 0%, 0.7)',
                             '&:hover': {
                                 borderColor: alpha(gray[700], 0.7),
                                 backgroundColor: (theme.vars || theme).palette.background.paper,

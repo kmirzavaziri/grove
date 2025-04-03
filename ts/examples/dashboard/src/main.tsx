@@ -17,19 +17,23 @@ initRouting(
     ]),
 );
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <AppTheme>
-            <CssBaseline />
-            <App
-                apiHandlers={{
-                    fetch: groveFetch(base_url),
-                    submit: groveSubmit(base_url),
-                }}
-                err404={{type: 'admin.SimplePage', key: '404', props: {code: '404', message: 'Not Found'}}}
-                err500={{type: 'admin.SimplePage', key: '500', props: {code: '500', message: 'Internal Error'}}}
-                loading={{type: 'admin.SimplePage', key: 'loading', props: {code: 'Loading', message: 'Fetching'}}}
-            />
-        </AppTheme>
-    </React.StrictMode>,
-);
+const root = document.getElementById('root');
+
+if (root) {
+    ReactDOM.createRoot(root).render(
+        <React.StrictMode>
+            <AppTheme>
+                <CssBaseline />
+                <App
+                    apiHandlers={{
+                        fetch: groveFetch(base_url),
+                        submit: groveSubmit(base_url),
+                    }}
+                    err404={{type: 'admin.SimplePage', key: '404', props: {code: '404', message: 'Not Found'}}}
+                    err500={{type: 'admin.SimplePage', key: '500', props: {code: '500', message: 'Internal Error'}}}
+                    loading={{type: 'admin.SimplePage', key: 'loading', props: {code: 'Loading', message: 'Fetching'}}}
+                />
+            </AppTheme>
+        </React.StrictMode>,
+    );
+}
