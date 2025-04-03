@@ -5,8 +5,6 @@ import {useAppContext} from '../../grove/src/app-state';
 import type {ComponentProps} from '../../grove/src/Component';
 import {Component} from '../../grove/src/Component';
 
-import {ARender} from './ARender';
-
 export interface XModalProps {
     path: string[];
     title: string;
@@ -16,7 +14,7 @@ export interface XModalProps {
 }
 
 export const XModal: React.FC<XModalProps> = (props) => {
-    const {state, render, apiHandlers} = useAppContext();
+    const {dispatch} = useAppContext();
     const [open, setOpen] = useState(props.open ?? false);
 
     useEffect(() => {
@@ -25,7 +23,13 @@ export const XModal: React.FC<XModalProps> = (props) => {
 
     const handleClose = (): void => {
         if (props.path) {
-            ARender({state, render, apiHandlers}, {node_path: props.path, patch: true, node: {props: {open: false}}});
+            dispatch({
+                path: props.path, modify: (node: ComponentProps) => {
+                    if (node.props) {
+                        node.props.open = false;
+                    }
+                },
+            });
         }
     };
 
