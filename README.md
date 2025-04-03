@@ -132,3 +132,4 @@ TODO
 8. Put data besides input and children when sending to fe in render? 
 9. Add unknown value to enums (variants), instead of pointer for nil.
 10. Enforce import DAG.
+11. Maybe delete the XClickable, or at least add action directly to button as well.

@@ -11,7 +11,7 @@ export interface ActionProps {
 }
 
 export function perform(appContextValue: AppContextValue, props: ActionProps): void {
-    const action = actionRegistry.get(props.type);
+    const action = actionRegistry.get(props?.type);
     if (action) {
         action(appContextValue, props.payload);
     }
