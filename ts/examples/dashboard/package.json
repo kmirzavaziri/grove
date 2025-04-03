@@ -4,6 +4,8 @@
   "main": "index.js",
   "type": "module",
   "dependencies": {
+    "@mui/material": "^7.0.1",
+    "react": "^19.1.0"
   },
   "scripts": {
     "dev": "vite",
