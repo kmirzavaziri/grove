@@ -16,7 +16,7 @@ export interface ComponentProps {
     path?: string[];
 }
 
-export const modifyComponentProps = (dest: ComponentProps, src: ComponentProps, patch: boolean): void => {
+export const modifyComponentProps = (src: ComponentProps, patch: boolean = false) => (dest: ComponentProps): void => {
     if (patch) {
         patchComponentProps(dest, src);
     } else {

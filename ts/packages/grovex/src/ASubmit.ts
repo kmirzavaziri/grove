@@ -1,4 +1,4 @@
-import {ComponentProps, AppContextValue, perform, Input, flatten} from '@grove/grove';
+import {ComponentProps, AppContextValue, perform, Input} from '@grove/grove';
 import {reverseRoute} from '@grove/grove';
 import type {Struct} from '@grove/grove/src/value';
 
@@ -11,7 +11,7 @@ export function ASubmit(appContextValue: AppContextValue, props: ASubmitProps): 
     console.log("here")
 
     // TODO state.tree might be null
-    const inputs = extractInputsFromNode(getNodeAt(appContextValue.state.tree!, props.node_path));
+    // const inputs = extractInputsFromNode(getNodeAt(appContextValue.state.tree!, props.node_path));
 
     const payload = {}; // TODO gather user input values
 
@@ -24,8 +24,8 @@ export function ASubmit(appContextValue: AppContextValue, props: ASubmitProps): 
 
 
 
-function extractInputsFromNode(node: ComponentProps): Input[] {
-    flatten(node);
-    // TODO get inputs and return
-    return [];
-}
+// function extractInputsFromNode(node: ComponentProps): Input[] {
+//     // flatten(node);
+//     // TODO get inputs and return
+//     return [];
+// }

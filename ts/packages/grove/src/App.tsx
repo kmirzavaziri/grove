@@ -2,7 +2,7 @@ import React, {useEffect, useReducer} from 'react';
 
 import type {ApiHandlers} from './app-state';
 import {AppContext, appReducer} from './app-state';
-import type {ComponentProps} from './Component';
+import {ComponentProps, modifyComponentProps} from './Component';
 import {Component} from './Component';
 import {resolvePath} from './routing';
 import type {Struct} from './value';
@@ -21,23 +21,23 @@ export const App: React.FC<AppProps> = (props) => {
         const {nodePath, params} = resolvePath(window.location.pathname);
 
         if (!nodePath) {
-            dispatch({path: [''], node: props.err404});
+            dispatch({path: [''], modify: modifyComponentProps(props.err404)});
             return;
         }
 
         props.apiHandlers
             .fetch(nodePath, params)
-            .then((node) => dispatch({path: [''], node}))
-            .catch(() => dispatch({path: [''], node: props.err500}));
+            .then((node) => dispatch({path: [''], modify: modifyComponentProps(node)}))
+            .catch(() => dispatch({path: [''], modify: modifyComponentProps(props.err500)}));
     }, [props.apiHandlers, props.err404, props.err500]);
 
-    if (!state.tree) {
+    if (!state.node) {
         return <Component props={props.loading} />;
     }
 
     return (
         <AppContext.Provider value={{state, dispatch, apiHandlers: props.apiHandlers}}>
-            <Component props={state.tree} />
+            <Component props={state.node} />
         </AppContext.Provider>
     );
 };
