@@ -1,4 +1,5 @@
-import { componentRegistry } from "@grove/grove";
-import { SimplePage } from "./SimplePage";
+import {componentRegistry} from '@grove/grove';
 
-componentRegistry.set("admin.SimplePage", SimplePage);
+import {SimplePage} from './SimplePage';
+
+componentRegistry.set('admin.SimplePage', SimplePage);

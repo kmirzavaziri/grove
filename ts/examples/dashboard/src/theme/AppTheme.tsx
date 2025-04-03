@@ -1,30 +1,31 @@
-import * as React from 'react';
-import {alpha, createTheme, ThemeProvider, Shadows} from '@mui/material/styles';
-import {svgIconClasses, SvgIconProps} from "@mui/material/SvgIcon";
-import {toggleButtonGroupClasses} from "@mui/material/ToggleButtonGroup";
+import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
+import {buttonBaseClasses} from '@mui/material/ButtonBase';
+import {checkboxClasses} from '@mui/material/Checkbox';
+import {menuItemClasses} from '@mui/material/MenuItem';
+import {outlinedInputClasses} from '@mui/material/OutlinedInput';
+import type { Shadows} from '@mui/material/styles';
+import {alpha, createTheme, ThemeProvider} from '@mui/material/styles';
+import type { SvgIconProps} from "@mui/material/SvgIcon";
+import {svgIconClasses} from '@mui/material/SvgIcon';
 import {toggleButtonClasses} from "@mui/material/ToggleButton";
-import CheckBoxOutlineBlankRoundedIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
-import {outlinedInputClasses} from "@mui/material/OutlinedInput";
-import {menuItemClasses} from "@mui/material/MenuItem";
-import {pickersDayClasses, pickersMonthClasses, pickersYearClasses} from "@mui/x-date-pickers";
-import {gridClasses} from "@mui/x-data-grid";
-import {checkboxClasses} from "@mui/material/Checkbox";
-import {tablePaginationClasses} from "@mui/material/TablePagination";
-import {paperClasses} from "@mui/material/Paper";
-import {listItemIconClasses} from "@mui/material/ListItemIcon";
-import {listClasses} from "@mui/material/List";
-import {iconButtonClasses} from "@mui/material/IconButton";
-import {axisClasses, chartsGridClasses, legendClasses} from "@mui/x-charts";
-import {dividerClasses} from "@mui/material/Divider";
-import {buttonBaseClasses} from "@mui/material/ButtonBase";
-import UnfoldMoreRoundedIcon from "@mui/icons-material/UnfoldMoreRounded";
-import {selectClasses} from "@mui/material/Select";
-import {tabClasses} from "@mui/material/Tab";
-import {typographyClasses} from "@mui/material/Typography";
-import {chipClasses} from "@mui/material/Chip";
-
+import {toggleButtonGroupClasses} from '@mui/material/ToggleButtonGroup';
+import {typographyClasses} from '@mui/material/Typography';
+import {axisClasses, chartsGridClasses, legendClasses} from '@mui/x-charts';
+import {gridClasses} from '@mui/x-data-grid';
+import {pickersDayClasses, pickersMonthClasses, pickersYearClasses} from '@mui/x-date-pickers';
+import {tablePaginationClasses} from '@mui/material/TablePagination';
+import {paperClasses} from '@mui/material/Paper';
+import {listItemIconClasses} from '@mui/material/ListItemIcon';
+import {listClasses} from '@mui/material/List';
+import {iconButtonClasses} from '@mui/material/IconButton';
+import {dividerClasses} from '@mui/material/Divider';
+import {selectClasses} from '@mui/material/Select';
+import {tabClasses} from '@mui/material/Tab';
+import {chipClasses} from '@mui/material/Chip';
+import * as React from 'react';
 
 declare module '@mui/material/Paper' {
     interface PaperPropsVariantOverrides {
@@ -46,8 +47,7 @@ declare module '@mui/material/styles' {
         900: string;
     }
 
-    interface PaletteColor extends ColorRange {
-    }
+    interface PaletteColor extends ColorRange {}
 
     interface Palette {
         baseShadow: string;
@@ -168,8 +168,7 @@ const colorSchemes = {
                 hover: alpha(gray[200], 0.2),
                 selected: `${alpha(gray[200], 0.3)}`,
             },
-            baseShadow:
-                'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px',
+            baseShadow: 'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px',
         },
     },
     dark: {
@@ -217,8 +216,7 @@ const colorSchemes = {
                 hover: alpha(gray[600], 0.2),
                 selected: alpha(gray[600], 0.3),
             },
-            baseShadow:
-                'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px',
+            baseShadow: 'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px',
         },
     },
 };
@@ -278,13 +276,8 @@ const shape = {
 };
 
 // @ts-ignore
-const defaultShadows: Shadows = [
-    'none',
-    'var(--template-palette-baseShadow)',
-    ...defaultTheme.shadows.slice(2),
-];
+const defaultShadows: Shadows = ['none', 'var(--template-palette-baseShadow)', ...defaultTheme.shadows.slice(2)];
 const shadows = defaultShadows;
-
 
 interface AppThemeProps {
     children: React.ReactNode;
@@ -603,11 +596,9 @@ export default function AppTheme(props: AppThemeProps) {
             MuiCheckbox: {
                 defaultProps: {
                     disableRipple: true,
-                    icon: (
-                        <CheckBoxOutlineBlankRoundedIcon sx={{color: 'hsla(210, 0%, 0%, 0.0)'}}/>
-                    ),
-                    checkedIcon: <CheckRoundedIcon sx={{height: 14, width: 14}}/>,
-                    indeterminateIcon: <RemoveRoundedIcon sx={{height: 14, width: 14}}/>,
+                    icon: <CheckBoxOutlineBlankRoundedIcon sx={{color: 'hsla(210, 0%, 0%, 0.0)'}} />,
+                    checkedIcon: <CheckRoundedIcon sx={{height: 14, width: 14}} />,
+                    indeterminateIcon: <RemoveRoundedIcon sx={{height: 14, width: 14}} />,
                 },
                 styleOverrides: {
                     root: ({theme}) => ({
@@ -632,7 +623,7 @@ export default function AppTheme(props: AppThemeProps) {
                             color: 'white',
                             backgroundColor: brand[500],
                             borderColor: brand[500],
-                            boxShadow: `none`,
+                            boxShadow: 'none',
                             '&:hover': {
                                 backgroundColor: brand[600],
                             },
@@ -1042,7 +1033,7 @@ export default function AppTheme(props: AppThemeProps) {
             MuiSelect: {
                 defaultProps: {
                     IconComponent: React.forwardRef<SVGSVGElement, SvgIconProps>((props, ref) => (
-                        <UnfoldMoreRoundedIcon fontSize="small" {...props} ref={ref}/>
+                        <UnfoldMoreRoundedIcon fontSize="small" {...props} ref={ref} />
                     )),
                 },
                 styleOverrides: {
@@ -1051,7 +1042,8 @@ export default function AppTheme(props: AppThemeProps) {
                         border: '1px solid',
                         borderColor: gray[200],
                         backgroundColor: (theme.vars || theme).palette.background.paper,
-                        boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
+                        boxShadow:
+                            'inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)',
                         '&:hover': {
                             borderColor: gray[300],
                             backgroundColor: (theme.vars || theme).palette.background.paper,
