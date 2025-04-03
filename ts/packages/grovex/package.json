@@ -4,5 +4,9 @@
   "main": "src/index.ts",
   "type": "module",
   "dependencies": {
+    "@grove/grove": "workspace:*",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
+    "react": "^19.1.0"
   }
 }

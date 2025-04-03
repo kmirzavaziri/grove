@@ -32,3 +32,6 @@ dist/
 .DS_Store
 .vscode/
 .idea/
+
+# pnpm
+pnpm-lock.yaml

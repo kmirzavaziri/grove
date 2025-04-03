@@ -25,7 +25,7 @@ ifndef name
 	@echo "Error: 'name' variable required (e.g., make example-client name=dashboard)"
 	@exit 1
 endif
-	cd ts/examples/$(name) && npm install && npm run dev
+	cd ts/examples/$(name) && pnpm install && pnpm run dev
 
 .PHONY: example
 example:

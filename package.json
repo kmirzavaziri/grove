@@ -1,10 +1,6 @@
 {
   "name": "grove",
   "private": true,
-  "workspaces": [
-    "ts/packages/*",
-    "ts/examples/*"
-  ],
   "scripts": {
     "lint": "eslint 'ts/**/*.{ts,tsx}'",
     "lint:fix": "eslint 'ts/**/*.{ts,tsx}' --fix"
@@ -14,5 +10,6 @@
     "eslint": "^9.23.0",
     "eslint-import-resolver-typescript": "^4.3.1",
     "eslint-plugin-import": "^2.31.0"
-  }
+  },
+  "packageManager": "pnpm@10.5.2"
 }
