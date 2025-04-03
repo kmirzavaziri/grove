@@ -1,10 +1,11 @@
-export type Align = 'inherit'
+export type Align =
+    | 'inherit'
     | 'center'
     | 'justify'
     | 'start'
     | 'end';
 
-export function align2MUI(align?: Align): "inherit" | "left" | "center" | "right" | "justify" | undefined {
+export function align2MUI(align?: Align): 'inherit' | 'left' | 'center' | 'right' | 'justify' | undefined {
     switch (align) {
         case 'start':
             return 'left';
@@ -17,7 +18,8 @@ export function align2MUI(align?: Align): "inherit" | "left" | "center" | "right
     }
 }
 
-export type Color = ''
+export type Color =
+    | ''
     | 'primary'
     | 'secondary'
     | 'success'
@@ -26,7 +28,8 @@ export type Color = ''
     | 'warning'
     | string;
 
-export type DTypographyVariant = 'inherit'
+export type DTypographyVariant =
+    | 'inherit'
     | 'body1'
     | 'body2'
     | 'button'
@@ -41,7 +44,8 @@ export type DTypographyVariant = 'inherit'
     | 'subtitle1'
     | 'subtitle2';
 
-export type DButtonVariant = 'item'
+export type DButtonVariant =
+    | 'item'
     | 'contained'
     | 'outlined'
     | 'text';
@@ -52,7 +56,8 @@ export type Size = ''
     | 'large'
     | string;
 
-export type ITextVariant = 'text'
+export type ITextVariant =
+    | 'text'
     | 'textarea'
     | 'password'
     | 'email'

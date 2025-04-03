@@ -58,9 +58,8 @@ module.exports = [
             'quotes': ['error', 'single', {avoidEscape: true}],
             'semi': ['error', 'always'],
             'comma-dangle': ['error', 'always-multiline'],
-            'object-curly-spacing': ['error', 'always'],
+            'object-curly-spacing': ['error', 'never'],
             'array-bracket-spacing': ['error', 'never'],
-
             'import/no-restricted-paths': [
                 'error',
                 {
