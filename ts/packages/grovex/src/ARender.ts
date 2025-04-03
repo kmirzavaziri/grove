@@ -1,5 +1,4 @@
-import type {ComponentProps, AppContextValue} from '@grove/grove';
-import {reverseRoute} from '@grove/grove';
+import {AppContextValue, ComponentProps, modifyComponentProps, reverseRoute} from '@grove/grove';
 import type {Struct} from '@grove/grove/src/value';
 
 export interface ARenderProps {
@@ -12,14 +11,18 @@ export interface ARenderProps {
 
 export function ARender(appContextValue: AppContextValue, props: ARenderProps): void {
     if (props.update_history) {
-        window.history.pushState({}, '', reverseRoute(props.node_path, props.request));
+        window.history.pushState({}, '', reverseRoute(props.node_path, props.request || {}));
     }
 
+    const modify = (newNode: ComponentProps) => (node: ComponentProps) => {
+        modifyComponentProps(node, newNode, props.patch);
+    };
+
     if (props.node) {
-        return appContextValue.render({path: props.node_path, node: props.node, patch: props.patch});
+        return appContextValue.dispatch({path: props.node_path, node: modify(props.node)});
     }
 
     appContextValue.apiHandlers
         .fetch(props.node_path, props.request)
-        .then((node) => appContextValue.render({path: props.node_path, node, patch: props.patch}));
+        .then((node) => appContextValue.dispatch({path: props.node_path, node: modify(node)}));
 }
